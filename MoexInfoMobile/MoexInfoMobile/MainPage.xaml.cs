@@ -12,50 +12,60 @@ namespace MoexInfoMobile
         public MainPage()
         {
             InitializeComponent();
+
+            /// По умолчанию позиции отсчета списка равны нулю.
+            FuturesFortsStart = 0;
+            StockBondsStart = 0;
+            StockSharesStart = 0;
+
             LoadDefaultSecurities();
         }
 
 
 
-        // Метод выполняет задачи первичной загрузки списка ценных бумаг.
+        /// Начало отсчета свписка для каждого типа ценных бумаг.
+        public uint FuturesFortsStart { get; private set; }
+        public uint StockBondsStart { get; private set; }
+        public uint StockSharesStart { get; private set; }
+
+
+        /// Фильтры ценных (группы) бумаг.
+        private const string futuresFortsFilter = "futures_forts";
+        private const string stockBondsFilter = "stock_bonds";
+        private const string stockSharesFilter = "stock_shares";
+
+
+
+        // Метод запускает выполнение задач загрузки списка бумаг и изменений их стоимости за день (по умолчанию).
         private void LoadDefaultSecurities()
         {
-            /// Массив групп ценных бумаг.
-            string[] filters = new string[]
+            Task<List<SecurityWithPriceChanges>>[] getSecuritiesWithPriceChanges = new Task<List<SecurityWithPriceChanges>>[]
             {
-                "futures_forts",
-                "stock_bonds",
-                "stock_shares"
+                LoadSecuritiesWitPriceChanges(FuturesFortsStart, futuresFortsFilter),
+                LoadSecuritiesWitPriceChanges(StockBondsStart, stockBondsFilter),
+                LoadSecuritiesWitPriceChanges(StockSharesStart, stockSharesFilter)
             };
-            
-            Task<List<Security>>[] securitiesTasks = new Task<List<Security>>[filters.Length]; /// Массив задач.
 
-            for (int i = 0; i < filters.Length; i++)
+            // TODO: Добавить отображение списка на экране.
+            Task.Factory.ContinueWhenAll(getSecuritiesWithPriceChanges, (Task<List<SecurityWithPriceChanges>>[] tasks) => { });
+        }
+
+
+
+        // Метод выполняет получение списка бумаг и изменения их цены за день.
+        private Task<List<SecurityWithPriceChanges>> LoadSecuritiesWitPriceChanges(uint start, string filter)
+        {
+            /// Задача, загружающая список ценных бумаг.
+            Task<List<Security>> getSecurities = Securities.GetSecurities(start, filter);
+
+            /// Задача, загружающая изменение цен за день для бумаг, полученных предыдущей.
+            Task<List<SecurityWithPriceChanges>> getPriceChanges = getSecurities.ContinueWith((Task<List<Security>> task) =>
             {
-                securitiesTasks[i] = Securities.GetSecurities(0, filters[i]);
-            }
-
-            /// Создание планирования задач.
-            Task.Factory.ContinueWhenAll(securitiesTasks, (Task<List<Security>>[] tasks) =>
-            {
-                for (int i = 0; i < tasks.Length; i++)
-                {
-                    List<Security> securities = tasks[i].Result;
-
-                    /// Отображение ценных бумаг в соответсвующих вкладках.
-                    for (int j = 0; j < securities.Count; j++)
-                    {
-                        Security stockShare = tasks[i].Result[j];
-
-                        /// Вызов оснвного потока.
-                        Dispatcher.BeginInvokeOnMainThread(() =>
-                        {
-                            /// Добавление дочернего элемента в список.
-                            // TODO: Добавить логику отображения ценных бумаг.
-                        });
-                    }
-                }
+                return new List<SecurityWithPriceChanges>();
+                // TODO: Добавить получение изменения цены за день.
             });
+
+            return getPriceChanges;
         }
     }
 }

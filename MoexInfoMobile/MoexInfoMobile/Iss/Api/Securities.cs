@@ -2,6 +2,7 @@
 using MoexInfoMobile.Iss.Http;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -10,7 +11,7 @@ namespace MoexInfoMobile.Iss.Api
     public static class Securities
     {
         // Метод возвращает задачу с обобщенным типом "список ценных бумаг".
-        public async static Task<List<Security>> GetSecurities(int start, string securityGroup, string q = "")
+        public static async Task<List<Security>> GetSecurities(uint start, string securityGroup, string q = "")
         {
             List<Security> securities = new List<Security>(); /// Списко ценных бумаг.
 
@@ -54,7 +55,7 @@ namespace MoexInfoMobile.Iss.Api
 
 
         // Метод возвращает задачу с обобщенным типом "информация о ценной бумаге".
-        public static async Task<SecurityInfo> GetSecurityInfo(string seqId)
+        public static async Task<SecurityInfo> GetSecurityInfo(string seqId, string group)
         {
             SecurityInfo securityInfo = null; /// Информация о ценной бумаге.
 
@@ -70,7 +71,18 @@ namespace MoexInfoMobile.Iss.Api
                     /// Получение элемента rows, который содержит подробную информацию о ценной бумаге.
                     XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
 
-                    if (SecurityInfo.CanExtractFromNode(rows, out securityInfo)) { }
+                    switch (group)
+                    {
+                        case "futures_forts":
+                            securityInfo = new FuturesFortInfo(rows);
+                            break;
+                        case "stock_bonds":
+                            securityInfo = new StockBondInfo(rows);
+                            break;
+                        case "stock_shares":
+                            securityInfo = new StockShareInfo(rows);
+                            break;
+                    }
                 }
                 catch (UriFormatException)
                 {
@@ -83,6 +95,59 @@ namespace MoexInfoMobile.Iss.Api
             });
 
             return securityInfo;
+        }
+
+
+
+        // Метод возвращает задачу с обобщенным типом "кортеж: дата начала торгов, дата окончания торгов".
+        public static async Task<Tuple<DateTime, DateTime>> GetSecurityAggregatesDates(string secId)
+        {
+            Tuple<DateTime, DateTime> dates = null; /// Кортеж: дата начала торгов, дата окончания торгов.
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    string path = $"https://iss.moex.com/iss/securities/{ secId }/aggregates.xml";
+                    Uri uri = new Uri(path); /// Путь http-запроса.
+
+                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+
+                    /// Получение элемента rows, который содержит даты начала и окончания торгов.
+                    XmlElement rows = document.DocumentElement.LastChild.LastChild as XmlElement;
+
+                    /// Если строка row есть, то даты извлекаются.
+                    if (rows.HasChildNodes)
+                    {
+                        XmlNode row = rows.FirstChild; /// Строка row.
+
+                        string fromStr = row.Attributes["from"].Value; /// Начало торгов.
+                        string tillStr = row.Attributes["till"].Value; /// Окончание торгов.
+
+                        string format = "yyyy-mm-dd";
+
+                        /// Получение даты начала и окончания торгов.
+                        DateTime from = DateTime.ParseExact(fromStr, format, CultureInfo.InvariantCulture);
+                        DateTime till = DateTime.ParseExact(tillStr, format, CultureInfo.InvariantCulture);
+
+                        dates = new Tuple<DateTime, DateTime>(from, till);
+                    }
+                }
+                catch (UriFormatException)
+                {
+                    // TODO: Выводить уведомление об ошибке.
+                }
+                catch (InvalidOperationException)
+                {
+                    // TODO: Выводить уведомление об ошибке.
+                }
+                catch (FormatException)
+                {
+                    dates = null;
+                }
+            });
+
+            return dates;
         }
     }
 }

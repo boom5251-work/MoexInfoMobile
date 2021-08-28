@@ -2,12 +2,18 @@
 
 namespace MoexInfoMobile.Iss.Data
 {
-    public sealed class Security
+    public class Security
     {
         private Security(string shortName, string secId)
         {
             ShortName = shortName;
             SecId = secId;
+        }
+
+
+        protected Security(Security security)
+        {
+            // TODO: Реализвать конструктор.
         }
 
 
