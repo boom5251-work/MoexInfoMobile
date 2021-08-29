@@ -8,16 +8,20 @@ namespace MoexInfoMobile.Iss.Data
     {
         public StockBondInfo(XmlNode rows) : base(rows)
         {
-            Isin = GetValueWithName(rows, "ISIN");
+            try
+            {
+                Isin = GetValueWithName(rows, "ISIN");
 
-            string issueSize = GetValueWithName(rows, "ISSUESIZE");
-            IssueSize = ulong.Parse(issueSize);
+                string issueSize = GetValueWithName(rows, "ISSUESIZE");
+                IssueSize = ulong.Parse(issueSize);
 
-            string issueDate = GetValueWithName(rows, "ISSUEDATE");
-            IssueDate = DateTime.ParseExact(issueDate, "yyyy-mm-dd", CultureInfo.InvariantCulture);
+                string issueDate = GetValueWithName(rows, "ISSUEDATE");
+                IssueDate = DateTime.ParseExact(issueDate, "yyyy-mm-dd", CultureInfo.InvariantCulture);
 
-            string path = $"http://invest-brands.cdn-tinkoff.ru/{ Isin }x160.png"; /// Ресурс с тинькофф-инвестиций (160x160).
-            BrandLogoUri = new Uri(path);
+                string path = $"http://invest-brands.cdn-tinkoff.ru/{ Isin }x160.png"; /// Ресурс с тинькофф-инвестиций (160x160).
+                BrandLogoUri = new Uri(path);
+            }
+            catch { }
         }
 
 

@@ -9,7 +9,7 @@ namespace MoexInfoMobile.Iss.Api
 {
     public static class Engines
     {
-        // Метод озвращает задачу с обобщенным типом "список свечей".
+        // Метод возвращает задачу с обобщенным типом "список свечей".
         public static async Task<List<Candle>> GetCandles(Tuple<string, string, string> args, string from, string till, byte interval)
         {
             List<Candle> candles = new List<Candle>();
@@ -42,13 +42,13 @@ namespace MoexInfoMobile.Iss.Api
                         }
                     }
                 }
-                catch (UriFormatException)
+                catch (UriFormatException ex)
                 {
-                    // TODO: Выводить уведомление об ошибке.
+                    App.Os.ShowToastNotification(ex.Message);
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException ex)
                 {
-                    // TODO: Выводить уведомление об ошибке.
+                    App.Os.ShowToastNotification(ex.Message);
                 }
             });
 

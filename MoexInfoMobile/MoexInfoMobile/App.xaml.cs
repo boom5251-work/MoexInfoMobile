@@ -1,17 +1,22 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 
 namespace MoexInfoMobile
 {
     public partial class App : Application
     {
-        public App()
+        public App(OperatingSystem os)
         {
             InitializeComponent();
 
+            Os = os;
             MainPage = new MainPage();
         }
+
+
+
+        public static OperatingSystem Os { get; private set; } /// Интерфейс опреационных систем Android и IOS.
+
+
 
         protected override void OnStart()
         {

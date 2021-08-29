@@ -19,6 +19,9 @@ namespace MoexInfoMobile
             StockSharesStart = 0;
 
             ShowAllDefaultSecurities();
+
+            // TODO: Удалить проверку toast-уведомлений.
+            App.Os.ShowToastNotification("Ку! Это boom5251!");
         }
 
 
@@ -62,93 +65,18 @@ namespace MoexInfoMobile
             /// Задача, загружающая список ценных бумаг.
             Securities.GetSecurities(start, filter).ContinueWith((Task<List<Security>> getSecurities) => 
             {
-                /// Последний день торгов (по умолчанию текущий день).
-                DateTime lastTradingDay = DateTime.Today;
-
-                /// Если текущий день суббота или воскресенье, то на последний день торгов усатнавливается последняя пятница.
-                switch (lastTradingDay.DayOfWeek)
-                {
-                    case DayOfWeek.Saturday:
-                        lastTradingDay = lastTradingDay.AddDays(-1);
-                        break;
-                    case DayOfWeek.Sunday:
-                        lastTradingDay = lastTradingDay.AddDays(-2);
-                        break;
-                }
-
-                string from = lastTradingDay.ToString("yyyy-mm-dd");
-
                 /// Получение ценных бумаг, дополненных изменением цены за день.
                 List<Security> securities = getSecurities.Result;
-                Task<Security>[] getUpdatedSecurities = new Task<Security>[securities.Count];
-
-                for (int i = 0; i < securities.Count; i++)
-                {
-                    Security security = securities[i];
-                    getUpdatedSecurities[i] = LoadCandlesForSecurity(security, from);
-                }
 
                 /// Отображение списка ценных бумаг.
-                Task.Factory.ContinueWhenAll(getUpdatedSecurities, (Task<Security>[] tasks) =>
+                foreach (Security security in securities)
                 {
-                    foreach (Task<Security> task in tasks)
+                    Dispatcher.BeginInvokeOnMainThread(() =>
                     {
                         // TODO: Добавить отображение всех типов задач.
-                    }
-                });
-            });
-        }
-
-
-
-        // Метод дополняет ценную бумагу значением изменения цены за день.
-        private async Task<Security> LoadCandlesForSecurity(Security security, string from)
-        {
-            await Task.Run(() =>
-            {
-                /// Установк значений, в зависимости от типа ценной бумаги.
-                string engine = string.Empty;
-                string market = string.Empty;
-
-                switch (security.SecurityGroup)
-                {
-                    case futuresFortsFilter:
-                        engine = "futures";
-                        market = "forts";
-                        break;
-                    case stockBondsFilter:
-                        engine = "stock";
-                        market = "bonds";
-                        break;
-                    case stockSharesFilter:
-                        engine = "stock";
-                        market = "shares";
-                        break;
-                }
-
-                /// Части http-запроса.
-                var args = new Tuple<string, string, string>(engine, market, security.SecId);
-
-                /// Получение свечей.
-                Task<List<Candle>> getCandles = Engines.GetCandles(args, from, string.Empty, 24);
-                getCandles.Wait();
-
-                List<Candle> candles = getCandles.Result; /// Свечи.
-
-                /// Расчет изменения цены за день.
-                if (candles.Count > 0)
-                {
-                    Candle first = candles[0]; /// Первая свеча.
-                    Candle last = candles[candles.Count - 1]; /// Последняя свеча.
-
-                    double difference = last.Close - first.Open;
-                    double percent = Math.Round(difference / first.Open, 2);
-
-                    security.PercentPriceChange = percent;
+                    });
                 }
             });
-
-            return security;
         }
     }
 }

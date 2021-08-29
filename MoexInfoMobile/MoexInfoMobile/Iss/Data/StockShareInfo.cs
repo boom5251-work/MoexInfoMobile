@@ -8,26 +8,30 @@ namespace MoexInfoMobile.Iss.Data
     {
         public StockShareInfo(XmlNode rows) : base(rows)
         {
-            Isin = GetValueWithName(rows, "ISIN");
+            try
+            {
+                Isin = GetValueWithName(rows, "ISIN");
 
-            string issueSize = GetValueWithName(rows, "ISSUESIZE");
-            IssueSize = ulong.Parse(issueSize);
+                string issueSize = GetValueWithName(rows, "ISSUESIZE");
+                IssueSize = ulong.Parse(issueSize);
 
-            string issueDate = GetValueWithName(rows, "ISSUEDATE");
-            string matDate = GetValueWithName(rows, "MATDATE");
-            string couponDate = GetValueWithName(rows, "COUPONDATE");
-            string format = "yyyy-mm-dd";
+                string issueDate = GetValueWithName(rows, "ISSUEDATE");
+                string matDate = GetValueWithName(rows, "MATDATE");
+                string couponDate = GetValueWithName(rows, "COUPONDATE");
+                string format = "yyyy-mm-dd";
 
-            IssueDate = DateTime.ParseExact(issueDate, format, CultureInfo.InvariantCulture);
-            MatDate = DateTime.ParseExact(matDate, format, CultureInfo.InvariantCulture);
-            CouponDate = DateTime.ParseExact(couponDate, format, CultureInfo.InvariantCulture);
+                IssueDate = DateTime.ParseExact(issueDate, format, CultureInfo.InvariantCulture);
+                MatDate = DateTime.ParseExact(matDate, format, CultureInfo.InvariantCulture);
+                CouponDate = DateTime.ParseExact(couponDate, format, CultureInfo.InvariantCulture);
 
-            InitialFaceValue = uint.Parse(GetValueWithName(rows, "INITIALFACEVALUE"));
-            FaceValue = uint.Parse(GetValueWithName(rows, "FACEVALUE"));
-            DayStoreDemition = uint.Parse(GetValueWithName(rows, "DAYSTOREDEMITION"));
+                InitialFaceValue = uint.Parse(GetValueWithName(rows, "INITIALFACEVALUE"));
+                FaceValue = uint.Parse(GetValueWithName(rows, "FACEVALUE"));
+                DayStoreDemition = uint.Parse(GetValueWithName(rows, "DAYSTOREDEMITION"));
 
-            DayStoreDemition = ushort.Parse(GetValueWithName(rows, "COUPONFREQUENCY"));
-            CouponPercent = double.Parse(GetValueWithName(rows, "COUPONFPERCENT"));
+                DayStoreDemition = ushort.Parse(GetValueWithName(rows, "COUPONFREQUENCY"));
+                CouponPercent = double.Parse(GetValueWithName(rows, "COUPONFPERCENT"));
+            }
+            catch { }
         }
 
 

@@ -8,14 +8,18 @@ namespace MoexInfoMobile.Iss.Data
     {
         public FuturesFortInfo(XmlNode rows) : base(rows)
         {
-            string lastTrade = GetValueWithName(rows, "LASTDATE");
-            string lastDelDte = GetValueWithName(rows, "LASTDELDATE");
-            string format = "yyyy-mm-dd";
+            try
+            {
+                string lastTrade = GetValueWithName(rows, "LASTDATE");
+                string lastDelDte = GetValueWithName(rows, "LASTDELDATE");
+                string format = "yyyy-mm-dd";
 
-            LastTrade = DateTime.ParseExact(lastTrade, format, CultureInfo.InvariantCulture);
-            LastDelDate = DateTime.ParseExact(lastDelDte, format, CultureInfo.InvariantCulture);
+                LastTrade = DateTime.ParseExact(lastTrade, format, CultureInfo.InvariantCulture);
+                LastDelDate = DateTime.ParseExact(lastDelDte, format, CultureInfo.InvariantCulture);
 
-            AssetCode = GetValueWithName(rows, "ASSETCODE");
+                AssetCode = GetValueWithName(rows, "ASSETCODE");
+            }
+            catch { }
         }
 
 

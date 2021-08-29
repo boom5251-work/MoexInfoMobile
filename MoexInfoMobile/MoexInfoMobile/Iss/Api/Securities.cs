@@ -19,7 +19,7 @@ namespace MoexInfoMobile.Iss.Api
             {
                 try
                 {
-                    string path = $"https://iss.moex.com/iss/securities.xml?limit=20&group_by=group&group_by_filter={ securityGroup }&start={ start }&q={ q }";
+                    string path = $"https://iss.moex.com/iss/securities.xml?limit=100&group_by=group&group_by_filter={ securityGroup }&start={ start }&q={ q }";
                     Uri uri = new Uri(path); /// Путь http-запроса.
 
                     XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
@@ -41,11 +41,11 @@ namespace MoexInfoMobile.Iss.Api
                 }
                 catch (UriFormatException)
                 {
-                    // TODO: Выводить уведомление об ошибке.
+                    App.Os.ShowToastNotification("Не удалось получить список ценных бумаг.");
                 }
                 catch (InvalidOperationException)
                 {
-                    // TODO: Выводить уведомление об ошибке.
+                    App.Os.ShowToastNotification("Не удалось получить список ценных бумаг.");
                 }
             });
 
@@ -86,11 +86,11 @@ namespace MoexInfoMobile.Iss.Api
                 }
                 catch (UriFormatException)
                 {
-                    // TODO: Выводить уведомление об ошибке.
+                    App.Os.ShowToastNotification("Не удалось загрузить подробную информацию.");
                 }
                 catch (InvalidOperationException)
                 {
-                    // TODO: Выводить уведомление об ошибке.
+                    App.Os.ShowToastNotification("Не удалось загрузить подробную информацию.");
                 }
             });
 
@@ -133,18 +133,7 @@ namespace MoexInfoMobile.Iss.Api
                         dates = new Tuple<DateTime, DateTime>(from, till);
                     }
                 }
-                catch (UriFormatException)
-                {
-                    // TODO: Выводить уведомление об ошибке.
-                }
-                catch (InvalidOperationException)
-                {
-                    // TODO: Выводить уведомление об ошибке.
-                }
-                catch (FormatException)
-                {
-                    dates = null;
-                }
+                catch { }
             });
 
             return dates;
