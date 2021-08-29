@@ -19,7 +19,7 @@ namespace MoexInfoMobile.Iss.Api
             {
                 try
                 {
-                    string path = $"https://iss.moex.com/iss/securities.xml?group_by=group&group_by_filter={ securityGroup }&start={ start }&q={ q }";
+                    string path = $"https://iss.moex.com/iss/securities.xml?limit=20&group_by=group&group_by_filter={ securityGroup }&start={ start }&q={ q }";
                     Uri uri = new Uri(path); /// Путь http-запроса.
 
                     XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.

@@ -2,28 +2,24 @@
 
 namespace MoexInfoMobile.Iss.Data
 {
-    public class Security
+    public sealed class Security
     {
         private Security(string shortName, string secId)
         {
             ShortName = shortName;
             SecId = secId;
-        }
-
-
-        protected Security(Security security)
-        {
-            // TODO: Реализвать конструктор.
+            PercentPriceChange = 0; /// По умолчанию 0%.
         }
 
 
 
         public string ShortName { get; } /// Короткое название ценной бумаги.
         public string SecId { get; } /// Идентификатор ценной бумаги (строковый).
+        public string SecurityGroup { get; private set; } /// Группа ценной бумаги.
 
         public bool IsTraded { get; private set; } /// Булево значение: торгуется ли бумага.
-
-        public string SecurityGroup { get; private set; } /// Группа ценной бумаги.
+        
+        public double PercentPriceChange { get; set; } /// Изменение цены в процентах.
 
 
 
