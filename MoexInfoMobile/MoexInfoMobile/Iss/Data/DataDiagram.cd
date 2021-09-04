@@ -3,7 +3,7 @@
   <Class Name="MoexInfoMobile.Iss.Data.Security">
     <Position X="0.5" Y="0.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAIIAAAAAAAAAAAABCAIAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAIIAAAAAAAAgAAABCAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Iss\Data\Security.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -56,6 +56,34 @@
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAIAAAAgAAAAAAAAgCEAAAAAIAAACAAAA=</HashCode>
       <FileName>Iss\Data\Candle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoexInfoMobile.Iss.Data.NewsInfo">
+    <Position X="11.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Iss\Data\NewsInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoexInfoMobile.Iss.Data.NewsItem">
+    <Position X="11.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAEAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Iss\Data\NewsItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoexInfoMobile.Iss.Data.Event">
+    <Position X="14.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AgACAAABAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Iss\Data\Event.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoexInfoMobile.Iss.Data.EventInfo">
+    <Position X="14.25" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAEIAAAAAAAI=</HashCode>
+      <FileName>Iss\Data\EventInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

@@ -10,8 +10,22 @@
   <Class Name="MoexInfoMobile.Iss.Api.Engines">
     <Position X="2.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
       <FileName>Iss\Api\Engines.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoexInfoMobile.Iss.Api.SiteNews">
+    <Position X="5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Iss\Api\SiteNews.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoexInfoMobile.Iss.Api.Events">
+    <Position X="7.25" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Iss\Api\Events.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
