@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using MoexInfoMobile.Pages;
+using Xamarin.Forms;
 
 namespace MoexInfoMobile
 {
@@ -9,7 +10,9 @@ namespace MoexInfoMobile
             InitializeComponent();
 
             Os = os;
-            MainPage = new MainPage();
+
+            NavigationPage navigationPage = new NavigationPage(new MainPage());
+            MainPage = navigationPage;
         }
 
 

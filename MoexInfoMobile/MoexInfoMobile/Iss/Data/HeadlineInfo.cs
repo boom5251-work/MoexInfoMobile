@@ -2,9 +2,9 @@
 
 namespace MoexInfoMobile.Iss.Data
 {
-    public sealed class NewsInfo : NewsItem
+    public sealed class HeadlineInfo : Headline
     {
-        public NewsInfo(XmlNode row) : base(row)
+        public HeadlineInfo(XmlNode row) : base(row)
         {
             try
             {

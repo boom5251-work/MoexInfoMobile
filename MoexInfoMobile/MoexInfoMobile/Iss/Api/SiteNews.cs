@@ -10,9 +10,9 @@ namespace MoexInfoMobile.Iss.Api
     public static class SiteNews
     {
         // Метод возвращает задачу с обобщенным типом "список новостных заголовков".
-        public static async Task<List<NewsItem>> GetHeadlines(uint start)
+        public static async Task<List<Headline>> GetHeadlines(uint start)
         {
-            List<NewsItem> headlines = new List<NewsItem>();
+            List<Headline> headlines = new List<Headline>();
 
             await Task.Run(() =>
             {
@@ -31,7 +31,7 @@ namespace MoexInfoMobile.Iss.Api
                     {
                         XmlNode row = rows.ChildNodes[i];
 
-                        NewsItem headline = new NewsItem(row);
+                        Headline headline = new Headline(row);
                         headlines.Add(headline);
                     }
                 }
@@ -51,9 +51,9 @@ namespace MoexInfoMobile.Iss.Api
 
         
         // Метод возвращает задачу с обобщенным типом "новость сайта".
-        public static async Task<NewsInfo> GetNewsInfo(ulong id)
+        public static async Task<HeadlineInfo> GetNewsInfo(long id)
         {
-            NewsInfo newsInfo = null;
+            HeadlineInfo newsInfo = null;
 
             await Task.Run(() =>
             {
@@ -67,7 +67,7 @@ namespace MoexInfoMobile.Iss.Api
                     /// Получение элемента rows, который содержит элемент-новость (row).
                     XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
 
-                    newsInfo = new NewsInfo(rows.FirstChild);
+                    newsInfo = new HeadlineInfo(rows.FirstChild);
                 }
                 catch (UriFormatException)
                 {

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:custom="clr-namespace:MoexInfoMobile.Custom"
+             x:Class="MoexInfoMobile.Pages.MainPage"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{StaticResource MoexScarlet}">
+
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid" x:Key="MainContainer">
+                <Setter Property="RowDefinitions">
+                    <Setter.Value>
+                        <RowDefinitionCollection>
+                            <RowDefinition Height="55" />
+                            <RowDefinition Height="*" />
+                        </RowDefinitionCollection>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            
+            <Style TargetType="StackLayout" x:Key="AppbarContainer">
+                <Setter Property="Orientation" Value="Horizontal" />
+            </Style>  
+            
+            <Style TargetType="Image" x:Key="MoexLogo">
+                <Setter Property="Margin" Value="20, 5, 0, 5" />
+                <Setter Property="Source" Value="MoexLogo.png" />
+            </Style>
+            
+            <Style TargetType="Image" x:Key="Moex">
+                <Setter Property="Margin" Value="5, 5, 0, 5" />
+                <Setter Property="Source" Value="Moex.png" />
+            </Style>
+            
+            <Style TargetType="custom:BackgroundFrame" x:Key="MainBackgroundFrame">
+                <Setter Property="BackgroundResource" Value="BackgroundFrameClassicChalk" />
+                <Setter Property="Grid.Row" Value="1" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+
+
+            <Style TargetType="xct:TabView" x:Key="MainTabView">
+                <Setter Property="IsTabTransitionEnabled" Value="False" />
+                <Setter Property="IsSwipeEnabled" Value="False" />
+                <Setter Property="TabStripHeight" Value="70" />
+                <Setter Property="TabStripPlacement" Value="Bottom" />
+            </Style>
+
+            <Style TargetType="xct:TabViewItem" x:Key="MainTabViewItems">
+                <Setter Property="FontFamily" Value="IntroRegular" />
+                <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
+                <Setter Property="TextColorSelected" Value="{StaticResource MidnightBadger}" />
+            </Style>
+            
+            <Style TargetType="xct:TabViewItem" x:Key="HeadlinesViewItem" BasedOn="{StaticResource MainTabViewItems}">
+                <Setter Property="Text" Value="новости" />
+            </Style>
+
+            <Style TargetType="xct:TabViewItem" x:Key="EventsViewItem" BasedOn="{StaticResource MainTabViewItems}">
+                <Setter Property="Text" Value="события" />
+            </Style>
+
+            <Style TargetType="xct:TabViewItem" x:Key="SecuritiesViewItem" BasedOn="{StaticResource MainTabViewItems}">
+                <Setter Property="Text" Value="бумаги" />
+            </Style>
+
+            
+            <Style TargetType="Label" x:Key="MainTitles">
+                <Setter Property="FontFamily" Value="IntroBold" />
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="Margin" Value="25, 20, 25, 10" />
+                <Setter Property="TextColor" Value="{StaticResource MidnightBadger}" />
+                <Setter Property="TextTransform" Value="Uppercase" />
+                <Setter Property="VerticalOptions" Value="Center" />
+            </Style>
+            
+            <Style TargetType="Label" x:Key="NewsTitle" BasedOn="{StaticResource MainTitles}">
+                <Setter Property="Text" Value="новости" />
+            </Style>
+
+            <Style TargetType="Label" x:Key="EventsTitle" BasedOn="{StaticResource MainTitles}">
+                <Setter Property="Text" Value="события" />
+            </Style>
+
+            <Style TargetType="Label" x:Key="SecuritiesTitle" BasedOn="{StaticResource MainTitles}">
+                <Setter Property="Text" Value="бумаги" />
+            </Style>
+
+
+            <Style TargetType="ActivityIndicator" x:Key="MainLoadingIndicator" BasedOn="{StaticResource LoadingIndicator}">
+                <Setter Property="Color" Value="{StaticResource MoexScarlet}" />
+            </Style>
+
+
+            <Style TargetType="custom:HeadlineView" x:Key="HeadlineViews">
+                <Setter Property="Margin" Value="0, 2, 0, 2" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    
+    <ContentPage.Content>
+        <Grid Style="{StaticResource MainContainer}">
+            <StackLayout Style="{StaticResource AppbarContainer}">
+                <Image Style="{StaticResource MoexLogo}" />
+                <Image Style="{StaticResource Moex}" />
+            </StackLayout>
+            
+            <custom:BackgroundFrame Style="{StaticResource MainBackgroundFrame}">
+                <xct:TabView Style="{StaticResource MainTabView}">
+                    <xct:TabViewItem Style="{StaticResource HeadlinesViewItem}">
+                        <StackLayout>
+                            <Label Style="{StaticResource NewsTitle}" />
+                            <ActivityIndicator x:Name="loadingIndicator" Style="{StaticResource MainLoadingIndicator}" />
+                            <ScrollView Style="{StaticResource Scroll}">
+                                <StackLayout x:Name="headlinesContainer" Style="{StaticResource ScrollContentContainer}" />
+                            </ScrollView>
+                        </StackLayout>
+                    </xct:TabViewItem>
+
+                    <xct:TabViewItem Style="{StaticResource EventsViewItem}">
+                        <StackLayout>
+                            <Label Style="{StaticResource EventsTitle}" />
+                        </StackLayout>
+                    </xct:TabViewItem>
+
+                    <xct:TabViewItem Style="{StaticResource SecuritiesViewItem}">
+                        <StackLayout>
+                            <Label Style="{StaticResource SecuritiesTitle}" />
+                        </StackLayout>
+                    </xct:TabViewItem>
+                </xct:TabView>
+            </custom:BackgroundFrame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

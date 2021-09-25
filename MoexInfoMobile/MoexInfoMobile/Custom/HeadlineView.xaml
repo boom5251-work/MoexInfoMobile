@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MoexInfoMobile.Custom.HeadlineView">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Frame" x:Key="BackgroundFrame">
+                <Setter Property="BackgroundColor" Value="{StaticResource LightGrey}" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="Margin" Value="0" />
+            </Style>
+
+            <Style TargetType="Grid" x:Key="Container">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="RowDefinitions">
+                    <Setter.Value>
+                        <RowDefinitionCollection>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="20" />
+                        </RowDefinitionCollection>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Label" x:Key="Labels">
+                <Setter Property="FontFamily" Value="IntroRegular" />
+            </Style>
+            <Style TargetType="Label" x:Key="TitleLabel" BasedOn="{StaticResource Labels}">
+                <Setter Property="TextColor" Value="{StaticResource MidnightBadger}" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style TargetType="Label" x:Key="DateLabel" BasedOn="{StaticResource Labels}">
+                <Setter Property="Grid.Row" Value="1" />
+                <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <ContentView.Content>
+        <Frame Style="{StaticResource BackgroundFrame}">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer x:Name="tapGestureRecognizer" />
+            </Frame.GestureRecognizers>
+            
+            <Grid Style="{StaticResource Container}">
+                <Label x:Name="titleLabel" Style="{StaticResource TitleLabel}" />
+                <Label x:Name="dateLabel" Style="{StaticResource DateLabel}" />
+            </Grid>
+        </Frame>
+    </ContentView.Content>
+</ContentView>

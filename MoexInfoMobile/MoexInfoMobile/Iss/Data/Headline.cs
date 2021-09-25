@@ -4,9 +4,9 @@ using System.Xml;
 
 namespace MoexInfoMobile.Iss.Data
 {
-    public class NewsItem
+    public class Headline
     {
-        public NewsItem(XmlNode row)
+        public Headline(XmlNode row)
         {
             try
             {
@@ -18,7 +18,7 @@ namespace MoexInfoMobile.Iss.Data
 
                 /// Извлечение дат публикации и редактирования.
                 string publishedAtStr = row.Attributes["published_at"].Value;
-                string format = "yyyy-mm-dd";
+                string format = "yyyy-MM-dd HH:mm:ss";
 
                 PublishedAt = DateTime.ParseExact(publishedAtStr, format, CultureInfo.InvariantCulture);
             }

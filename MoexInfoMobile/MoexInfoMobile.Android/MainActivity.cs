@@ -53,5 +53,13 @@ namespace MoexInfoMobile.Droid
             /// Отображение уведомления.
             notification.Show();
         }
+
+
+
+        // Метод изменяет цвет statusBar.
+        public void ChangeStatusBarColor(Color color)
+        {
+            Window.SetStatusBarColor(color.ToAndroid());
+        }
     }
 }
