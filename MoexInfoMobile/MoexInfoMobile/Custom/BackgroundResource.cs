@@ -2,6 +2,7 @@
 {
     public enum BackgroundResource
     {
-        BackgroundFrameClassicChalk
+        BackgroundFrameClassicChalk,
+        TableBackroundFrame
     }
 }

@@ -37,6 +37,7 @@
                 <Setter Property="HorizontalOptions" Value="FillAndExpand" />
                 <Setter Property="Grid.Row" Value="1" />
                 <Setter Property="Margin" Value="0" />
+                <Setter Property="Padding" Value="0" />
             </Style>
 
             <Style TargetType="StackLayout" x:Key="ScrollContentContainer">

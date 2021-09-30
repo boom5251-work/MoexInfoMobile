@@ -25,7 +25,7 @@
                 <Setter Property="Margin" Value="25, 15, 0, 15" />
                 <Setter Property="Source" Value="BackArrowClassicChalk.png" />
             </Style>
-            
+
             <Style TargetType="custom:BackgroundFrame" x:Key="MainBackgroundFrame">
                 <Setter Property="BackgroundResource" Value="BackgroundFrameClassicChalk" />
                 <Setter Property="Grid.Row" Value="1" />
@@ -36,21 +36,15 @@
             <Style TargetType="Label" x:Key="PublishedAtLabel">
                 <Setter Property="FontFamily" Value="IntroRegular" />
                 <Setter Property="HeightRequest" Value="35" />
-                <Setter Property="Margin" Value="25, 25, 15, 0" />
+                <Setter Property="Margin" Value="25, 25, 25, 0" />
                 <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
             </Style>
 
             <Style TargetType="Label" x:Key="TitleLabel">
                 <Setter Property="FontFamily" Value="IntroBoldAlt" />
                 <Setter Property="FontSize" Value="28" />
+                <Setter Property="Margin" Value="0, 0, 0, 10" />
                 <Setter Property="TextColor" Value="{StaticResource MidnightBadger}" />
-            </Style>
-
-            <Style TargetType="Label" x:Key="BodyLabel">
-                <Setter Property="FontFamily" Value="IntroRegular" />
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="Margin" Value="0, 10, 0, 10" />
-                <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
             </Style>
 
 
@@ -71,9 +65,8 @@
                     <ActivityIndicator x:Name="loadingIndicator" Style="{StaticResource MainLoadingIndicator}" />
                     
                     <ScrollView Style="{StaticResource Scroll}">
-                        <StackLayout Style="{StaticResource ScrollContentContainer}">
+                        <StackLayout x:Name="scrollDataContainer" Style="{StaticResource ScrollContentContainer}">
                             <Label x:Name="titleLabel" Style="{StaticResource TitleLabel}" />
-                            <Label x:Name="bodyLabel" Style="{StaticResource BodyLabel}" />
                         </StackLayout>
                     </ScrollView>
                 </StackLayout>

@@ -12,6 +12,6 @@ namespace MoexInfoMobile.Custom
         }
 
         public static readonly BindableProperty BackgroundResourceProperty =
-            BindableProperty.Create("BackgroundResource", typeof(BackgroundResource), typeof(BackgroundFrame), default(BackgroundResource));
+            BindableProperty.Create(nameof(BackgroundResource), typeof(BackgroundResource), typeof(BackgroundFrame), default(BackgroundResource));
     }
 }
