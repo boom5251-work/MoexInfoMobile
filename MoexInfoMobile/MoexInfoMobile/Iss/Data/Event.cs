@@ -13,9 +13,9 @@ namespace MoexInfoMobile.Iss.Data
 
             Title = row.Attributes["title"].Value;
 
-            string format = "yyyy-MM-dd hh:mm:ss";
+            string format = "yyyy-MM-dd HH:mm:ss";
             string from = row.Attributes["from"].Value;
-            string modifiedAt = row.Attributes["modified-at"].Value;
+            string modifiedAt = row.Attributes["modified_at"].Value;
 
             From = DateTime.ParseExact(from, format, CultureInfo.InvariantCulture);
             ModifiedAt = DateTime.ParseExact(modifiedAt, format, CultureInfo.InvariantCulture);

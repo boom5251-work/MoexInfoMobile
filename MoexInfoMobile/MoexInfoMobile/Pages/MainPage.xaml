@@ -96,8 +96,27 @@
             </Style>
 
 
-            <Style TargetType="custom:HeadlineView" x:Key="HeadlineViews">
+            <Style TargetType="custom:InfoCellView" x:Key="InfoCellViews">
                 <Setter Property="Margin" Value="0, 2, 0, 2" />
+            </Style>
+
+
+            <Style TargetType="ScrollView" x:Key="SecuritiesTypeScroll">
+                <Setter Property="Padding" Value="25, 0" />
+                <Setter Property="Orientation" Value="Horizontal" />
+            </Style>
+
+            <Style TargetType="StackLayout" x:Key="SecuritiesTypeContainer">
+                <Setter Property="Orientation" Value="Horizontal" />
+            </Style>
+
+            <Style TargetType="Button" x:Key="SecuritiesToggleButtons">
+                <Setter Property="BackgroundColor" Value="{StaticResource LightGrey}" />
+                <Setter Property="CornerRadius" Value="50" />
+                <Setter Property="FontFamily" Value="IntroRegular" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Padding" Value="20, 0" />
+                <Setter Property="TextColor" Value="{StaticResource MidnightBadger}" />
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -115,22 +134,55 @@
                     <xct:TabViewItem Style="{StaticResource HeadlinesViewItem}">
                         <StackLayout>
                             <Label Style="{StaticResource NewsTitle}" />
-                            <ActivityIndicator x:Name="loadingIndicator" Style="{StaticResource MainLoadingIndicator}" />
+                            <ActivityIndicator x:Name="newsLoadingIndicator" Style="{StaticResource MainLoadingIndicator}" />
                             <ScrollView Style="{StaticResource Scroll}">
                                 <StackLayout x:Name="headlinesContainer" Style="{StaticResource ScrollContentContainer}" />
                             </ScrollView>
                         </StackLayout>
                     </xct:TabViewItem>
 
+                    
                     <xct:TabViewItem Style="{StaticResource EventsViewItem}">
                         <StackLayout>
                             <Label Style="{StaticResource EventsTitle}" />
+                            <ActivityIndicator x:Name="eventsLoadingIndicator" Style="{StaticResource MainLoadingIndicator}" />
+                            <ScrollView Style="{StaticResource Scroll}">
+                                <StackLayout x:Name="eventsContainer" Style="{StaticResource ScrollContentContainer}" />
+                            </ScrollView>
                         </StackLayout>
                     </xct:TabViewItem>
 
+                    
                     <xct:TabViewItem Style="{StaticResource SecuritiesViewItem}">
                         <StackLayout>
                             <Label Style="{StaticResource SecuritiesTitle}" />
+                            
+                            <ScrollView Style="{StaticResource SecuritiesTypeScroll}">
+                                <StackLayout x:Name="securityButtonsContainer" Style="{StaticResource SecuritiesTypeContainer}">
+                                    <Button Text="Акции"
+                                            x:Name="stockBondsToggleButton"
+                                            Style="{StaticResource SecuritiesToggleButtons}"
+                                            Clicked="SecurityButton_Clicked" />
+                                    
+                                    <Button Text="Облигации"
+                                            Style="{StaticResource SecuritiesToggleButtons}"
+                                            Clicked="SecurityButton_Clicked"/>
+                                    
+                                    <Button Text="Фьючерсные контракты"
+                                            Style="{StaticResource SecuritiesToggleButtons}"
+                                            Clicked="SecurityButton_Clicked"/>
+                                </StackLayout>
+                            </ScrollView>
+                            
+                            <ScrollView Style="{StaticResource Scroll}">
+                                <StackLayout>
+                                    <StackLayout x:Name="stockBondsContainer" Style="{StaticResource ScrollContentContainer}" />
+                                    <StackLayout x:Name="stockSharesContainer" Style="{StaticResource ScrollContentContainer}" />
+                                    <StackLayout x:Name="futuresFortsContainer" Style="{StaticResource ScrollContentContainer}" />
+                                </StackLayout>
+                            </ScrollView>
+
+                            <ActivityIndicator x:Name="securitiesLoadingIndicator" Style="{StaticResource MainLoadingIndicator}" />
                         </StackLayout>
                     </xct:TabViewItem>
                 </xct:TabView>

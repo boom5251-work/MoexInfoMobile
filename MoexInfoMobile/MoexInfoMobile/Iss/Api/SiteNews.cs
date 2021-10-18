@@ -51,7 +51,7 @@ namespace MoexInfoMobile.Iss.Api
 
         
         // Метод возвращает задачу с обобщенным типом "новость сайта".
-        public static async Task<HeadlineInfo> GetNewsInfo(long id)
+        public static async Task<HeadlineInfo> GetNewsInfo(ulong id)
         {
             HeadlineInfo newsInfo = null;
 

@@ -11,9 +11,9 @@ using Xamarin.Forms.Xaml;
 namespace MoexInfoMobile.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HeadlineInfoPage : ContentPage
+    public partial class CellInfoPage : ContentPage
     {
-        public HeadlineInfoPage(long headlineId)
+        public CellInfoPage(ulong headlineId)
         {
             InitializeComponent();
             ShowHeadlineInfo(headlineId);
@@ -22,7 +22,7 @@ namespace MoexInfoMobile.Pages
 
 
         // Метод запускает выполнение задачи загрузки подробной информации о новсти.
-        private void ShowHeadlineInfo(long headlineId)
+        private void ShowHeadlineInfo(ulong headlineId)
         {
             /// Получение информации о новсти.
             Task<HeadlineInfo> headlineInfoTask = SiteNews.GetNewsInfo(headlineId);

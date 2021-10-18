@@ -12,7 +12,7 @@ namespace MoexInfoMobile.Iss.Data
             {
                 /// Извелчение индентификатора и заголовка.
                 string idStr = row.Attributes["id"].Value;
-                Id = long.Parse(idStr);
+                Id = ulong.Parse(idStr);
 
                 Title = row.Attributes["title"].Value;
 
@@ -27,7 +27,7 @@ namespace MoexInfoMobile.Iss.Data
 
 
 
-        public long Id { get; } /// Идентификатор записи.
+        public ulong Id { get; } /// Идентификатор записи.
         public string Title { get; } /// Заголовок.
         public DateTime PublishedAt { get; } /// Дата публикации.
     }

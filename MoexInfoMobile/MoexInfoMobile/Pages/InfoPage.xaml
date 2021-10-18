@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:MoexInfoMobile.Custom"
-             x:Class="MoexInfoMobile.Pages.HeadlineInfoPage"
+             x:Class="MoexInfoMobile.Pages.CellInfoPage"
              BackgroundColor="{StaticResource WolfGrey}">
 
 
