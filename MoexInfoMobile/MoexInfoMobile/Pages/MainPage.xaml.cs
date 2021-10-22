@@ -124,7 +124,7 @@ namespace MoexInfoMobile.Pages
         private async void HeadlineView_Tapped(InfoCellView sender, ulong headlineId)
         {
             /// Переход на страницу новости.
-            CellInfoPage headlineInfoPage = new CellInfoPage(headlineId);
+            CellInfoPage headlineInfoPage = new CellInfoPage(headlineId, SiteInfoType.HeadlineInfo);
             await Navigation.PushModalAsync(headlineInfoPage);
 
             /// Изменение цвета statusBar.
@@ -138,7 +138,7 @@ namespace MoexInfoMobile.Pages
         private async void EventView_Tapped(InfoCellView sender, ulong eventId)
         {
             /// Переход на страницу события.
-            CellInfoPage eventInfoPage = new CellInfoPage(eventId);
+            CellInfoPage eventInfoPage = new CellInfoPage(eventId, SiteInfoType.EventInfo);
             await Navigation.PushModalAsync(eventInfoPage);
 
             /// Изменение цвета statusBar.

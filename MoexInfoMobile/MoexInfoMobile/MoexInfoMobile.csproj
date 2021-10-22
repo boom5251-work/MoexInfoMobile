@@ -11,10 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Html\HtmlDecoder.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Resources\Fonts\Intro-Bold-Alt.otf" />
     <None Remove="Resources\Fonts\Intro-Bold.otf" />
     <None Remove="Resources\Fonts\Intro-Regular.otf" />
@@ -43,6 +39,12 @@
 
   <ItemGroup>
     <EmbeddedResource Update="Custom\InfoCellView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Custom\Table.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Custom\TableCell.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\InfoPage.xaml">

@@ -1,10 +1,12 @@
-﻿using MoexInfoMobile.Html;
+﻿using MoexInfoMobile.HtmlFormat;
 using MoexInfoMobile.Iss.Api;
 using MoexInfoMobile.Iss.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Xml;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,16 +15,24 @@ namespace MoexInfoMobile.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CellInfoPage : ContentPage
     {
-        public CellInfoPage(ulong headlineId)
+        public CellInfoPage(ulong infoId, SiteInfoType infoType)
         {
             InitializeComponent();
-            ShowHeadlineInfo(headlineId);
+
+            if (infoType == SiteInfoType.HeadlineInfo)
+            {
+                GetHeadlineInfo(infoId);
+            }
+            else if (infoType == SiteInfoType.EventInfo)
+            {
+                GetEventInfo(infoId);
+            }
         }
 
 
 
-        // Метод запускает выполнение задачи загрузки подробной информации о новсти.
-        private void ShowHeadlineInfo(ulong headlineId)
+        // Метод загружает подробную информацию о новсти.
+        private void GetHeadlineInfo(ulong headlineId)
         {
             /// Получение информации о новсти.
             Task<HeadlineInfo> headlineInfoTask = SiteNews.GetNewsInfo(headlineId);
@@ -36,49 +46,62 @@ namespace MoexInfoMobile.Pages
                 string format = "dd.MM.yyyy HH:mm";
                 string publishedAt = headlineInfo.PublishedAt.ToString(format, CultureInfo.InvariantCulture);
 
-                /// Вычленение данных из html-тегов.
-                HtmlDecoder htmlDecoder = new HtmlDecoder
+                /// Создание элементов интерфейса.
+                HtmlDecoder htmlReader = new HtmlDecoder(Resources);
+                
+                if (htmlReader.IsHtmlText(headlineInfo.Body))
                 {
-                    Resources = Resources,
-                    CellsBackgroundColor = (Color)Application.Current.Resources["ClassicChalk"],
-                    EmptyCellsBackgroundColor = (Color)Application.Current.Resources["LightGrey"]
-                };
-
-                bool isEncoded = htmlDecoder.EncodeHtml(headlineInfo.Body, out LinkedList<View> views);
-
-                /// Добавление элементов на страницу.
-                if (isEncoded)
-                {
-                    Dispatcher.BeginInvokeOnMainThread(() =>
+                    try
                     {
-                        /// Выключение индикатора загрузки.
-                        loadingIndicator.IsVisible = false;
-                        /// Добавление элементов на страницу.
-                        foreach (View view in views)
-                            scrollDataContainer.Children.Add(view);
-                    });
+                        List<View> views = htmlReader.DecodeHtml(headlineInfo.Body);
+                        ShowInfo(headlineInfo.Title, publishedAt, views.ToArray());
+                    }
+                    catch (XmlException ex)
+                    {
+                        // TODO: XmlExeption
+                        Debug.WriteLine(ex);
+                    }
                 }
                 else
                 {
-                    Dispatcher.BeginInvokeOnMainThread(() =>
+                    Label label = new Label
                     {
-                        /// Выключение индикатора загрузки.
-                        loadingIndicator.IsVisible = false;
-                        /// Добавление текста на страницу.
-                        Label label = new Label
-                        {
-                            Text = headlineInfo.Body,
-                            Style = (Style)Resources["BodyLabel"]
-                        };
-                    });
-                }
+                        Text = headlineInfo.Body,
+                        Style = labelStyle
+                    };
 
-                /// Установка даты публикации и заголовка.
-                Dispatcher.BeginInvokeOnMainThread(() =>
+                    ShowInfo(headlineInfo.Title, publishedAt, label);
+                }
+            });
+        }
+
+
+
+        // Метод загружает подробную информацию о событии.
+        private void GetEventInfo(ulong eventInfoId)
+        {
+            // TODO: Добавить логику выполнения.
+            throw new NotImplementedException();
+        }
+
+
+
+        // Метод отображает информацию на странице.
+        private void ShowInfo(string title, string publishedAt, params View[] body)
+        {
+            /// Установка даты публикации, заголовка и тела.
+            Dispatcher.BeginInvokeOnMainThread(() =>
+            {
+                loadingIndicator.IsVisible = false;
+
+                titleLabel.Text = title;
+                publishedAtLabel.Text = publishedAt;
+
+                foreach (View view in body)
                 {
-                    titleLabel.Text = headlineInfo.Title;
-                    publishedAtLabel.Text = publishedAt;
-                });
+                    if (view != null)
+                        scrollDataContainer.Children.Add(view);
+                }
             });
         }
 

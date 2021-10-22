@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Frame xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="MoexInfoMobile.Custom.TableCell"
+       HasShadow="False"
+       Padding="0"
+       CornerRadius="0">
+
+    <Frame.Resources>
+        <ResourceDictionary>
+            <Style TargetType="StackLayout" x:Key="CellContainer">
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Orientation" Value="Vertical"/>
+                <Setter Property="Padding" Value="0" />
+            </Style>
+        </ResourceDictionary>
+    </Frame.Resources>
+    
+    <Frame.Content>
+        <StackLayout x:Name="_cell" Style="{StaticResource CellContainer}" />
+    </Frame.Content>
+</Frame>

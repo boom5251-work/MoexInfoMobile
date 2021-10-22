@@ -8,6 +8,39 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <Style TargetType="custom:TableCell" x:Key="TableCell">
+                <Setter Property="BackgroundColor" Value="{StaticResource ClassicChalk}" />
+            </Style>
+
+            <Style TargetType="custom:TableCell" x:Key="EmptyTableCell">
+                <Setter Property="BackgroundColor" Value="{StaticResource LightGrey}" />
+            </Style>
+            
+            <Style TargetType="Label" x:Key="TableText">
+                <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
+                <Setter Property="FontFamily" Value="IntroRegular" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Margin" Value="10" />
+            </Style>
+
+            <Style TargetType="custom:Table" x:Key="Table">
+                <Setter Property="BackgroundColor" Value="{StaticResource WolfGrey}" />
+                <Setter Property="CellStyle" Value="{StaticResource TableCell}" />
+                <Setter Property="EmptyCellStyle" Value="{StaticResource EmptyTableCell}" />
+                <Setter Property="Margin" Value="0, 0, 0, 10" />
+                <Setter Property="TextStyle" Value="{StaticResource TableText}" />
+            </Style>
+
+
+            <Style TargetType="Label" x:Key="Label" x:Name="labelStyle">
+                <Setter Property="FontFamily" Value="IntroRegular" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="Margin" Value="0, 0, 0, 10" />
+                <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
+            </Style>
+        </ResourceDictionary>
+
+        <ResourceDictionary>
             <Style TargetType="Grid" x:Key="MainContainer">
                 <Setter Property="Grid.RowDefinitions">
                     <Setter.Value>
@@ -42,7 +75,7 @@
 
             <Style TargetType="Label" x:Key="TitleLabel">
                 <Setter Property="FontFamily" Value="IntroBoldAlt" />
-                <Setter Property="FontSize" Value="28" />
+                <Setter Property="FontSize" Value="26" />
                 <Setter Property="Margin" Value="0, 0, 0, 10" />
                 <Setter Property="TextColor" Value="{StaticResource MidnightBadger}" />
             </Style>
