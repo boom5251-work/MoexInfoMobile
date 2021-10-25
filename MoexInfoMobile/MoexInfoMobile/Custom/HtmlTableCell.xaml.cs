@@ -4,14 +4,14 @@ using Xamarin.Forms.Xaml;
 namespace MoexInfoMobile.Custom
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TableCell : Frame
+    public partial class HtmlTableCell : Frame
     {
-        public TableCell()
+        public HtmlTableCell()
         {
             InitializeComponent();
         }
 
-        public TableCell(params View[] views) : base()
+        public HtmlTableCell(params View[] views) : base()
         {
             foreach (View view in views)
             {

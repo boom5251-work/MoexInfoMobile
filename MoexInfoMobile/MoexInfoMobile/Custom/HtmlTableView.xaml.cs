@@ -4,9 +4,9 @@ using Xamarin.Forms.Xaml;
 namespace MoexInfoMobile.Custom
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class Table : ContentView
+    public partial class HtmlTableView : ContentView
     {
-        public Table()
+        public HtmlTableView()
         {
             InitializeComponent();
         }
@@ -27,7 +27,7 @@ namespace MoexInfoMobile.Custom
         }
 
         public static readonly BindableProperty CellStyleProperty =
-            BindableProperty.Create(nameof(CellStyle), typeof(Style), typeof(Table), null);
+            BindableProperty.Create(nameof(CellStyle), typeof(Style), typeof(HtmlTableView), null);
 
 
         // Стиль пустых ячеек таблицы.
@@ -38,7 +38,7 @@ namespace MoexInfoMobile.Custom
         }
 
         public static readonly BindableProperty EmptyCellStyleProperty =
-            BindableProperty.Create(nameof(EmptyCellStyle), typeof(Style), typeof(Table), null);
+            BindableProperty.Create(nameof(EmptyCellStyle), typeof(Style), typeof(HtmlTableView), null);
 
 
         // Стиль текстовых элементов в ячейках таблицы.
@@ -49,7 +49,7 @@ namespace MoexInfoMobile.Custom
         }
 
         public static readonly BindableProperty TextStyleProperty =
-            BindableProperty.Create(nameof(TextStyle), typeof(Style), typeof(Table), null);
+            BindableProperty.Create(nameof(TextStyle), typeof(Style), typeof(HtmlTableView), null);
 
 
 
@@ -88,7 +88,7 @@ namespace MoexInfoMobile.Custom
 
                 for (int j = 0; j < ColumnsCount; j++)
                 {
-                    TableCell cell = new TableCell();
+                    HtmlTableCell cell = new HtmlTableCell();
                     /// Создание ячеек.
                     if (CellsContent[i, j] != null)
                     {
@@ -128,9 +128,9 @@ namespace MoexInfoMobile.Custom
             {
                 view.SetBinding(StyleProperty, nameof(TextStyle));
             }
-            else if (view is TableCell)
+            else if (view is HtmlTableCell)
             {
-                if ((view as TableCell).HasChildren)
+                if ((view as HtmlTableCell).HasChildren)
                 {
                     view.SetBinding(StyleProperty, nameof(CellStyle));
                 }

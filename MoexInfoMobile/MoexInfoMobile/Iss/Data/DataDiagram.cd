@@ -58,18 +58,18 @@
       <FileName>Iss\Data\Candle.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MoexInfoMobile.Iss.Data.NewsInfo">
+  <Class Name="MoexInfoMobile.Iss.Data.HeadlineInfo">
     <Position X="11.5" Y="3" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Iss\Data\NewsInfo.cs</FileName>
+      <FileName>Iss\Data\HeadlineInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="MoexInfoMobile.Iss.Data.NewsItem">
+  <Class Name="MoexInfoMobile.Iss.Data.Headline">
     <Position X="11.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAEAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Iss\Data\NewsItem.cs</FileName>
+      <FileName>Iss\Data\Headline.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.Event">
@@ -86,5 +86,12 @@
       <FileName>Iss\Data\EventInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Enum Name="MoexInfoMobile.Pages.SiteInfoType">
+    <Position X="11.5" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAQAAA=</HashCode>
+      <FileName>Iss\Data\SiteInfoType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

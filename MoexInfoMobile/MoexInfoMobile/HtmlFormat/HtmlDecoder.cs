@@ -1,4 +1,5 @@
 ﻿using MoexInfoMobile.Custom;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -59,7 +60,11 @@ namespace MoexInfoMobile.HtmlFormat
             {
                 /// Текстовый блок (параграф).
                 case "p":
-                    view = CreateLabel(element.InnerText, (Style)HtmlStyles["Label"]);
+                    view = CreateTextElement(element);
+                    break;
+                /// Ссылка.
+                case "a":
+                    view = CreateLinkLabel(element);
                     break;
                 /// Таблица.
                 case "table":
@@ -73,6 +78,14 @@ namespace MoexInfoMobile.HtmlFormat
                 case "td":
                     view = CreateLabel(element.InnerText);
                     break;
+                /// Неупорядоченный список.
+                case "ul":
+                    view = CreateUnorderedList(element);
+                    break;
+                /// Нумерованный список.
+                case "ol":
+                    view = CreateNumberedList(element);
+                    break;
                 /// Ничего из этого.
                 default:
                     view = null;
@@ -85,7 +98,7 @@ namespace MoexInfoMobile.HtmlFormat
 
 
         // Метод проверяет, является ли строка html-разметкой.
-        public bool IsHtmlText(string text)
+        public static bool IsHtmlText(string text)
         {
             return Regex.IsMatch(text, "<.+?>");
         }
@@ -118,7 +131,50 @@ namespace MoexInfoMobile.HtmlFormat
 
 
         // Метод создает текстовый блок.
-        private Label CreateLabel(string text, Style labelStyle = null)
+        private View CreateTextElement(XmlElement element)
+        {
+            View result;
+
+            if (element.InnerXml.ToLower().Contains("</a>"))
+            {
+                result = CreateFormattedText(element);
+            }
+            else
+            {
+                result = CreateLabel(element.InnerText);
+            }
+
+            return result;
+        }
+
+
+
+        // Метод создает контейнер с форматированным текстом.
+        private StackLayout CreateFormattedText(XmlElement element)
+        {
+            StackLayout layout = new StackLayout();
+
+            foreach (XmlNode node in element)
+            {
+                if (node.NodeType == XmlNodeType.Text)
+                {
+                    Label label = CreateLabel(node.InnerText);
+                    layout.Children.Add(label);
+                }
+                else if (node.Name.ToLower() == "a")
+                {
+                    LinkLabel linkLabel = CreateLinkLabel(node as XmlElement);
+                    layout.Children.Add(linkLabel);
+                }
+            }
+
+            return layout;
+        }
+
+
+
+        // Метод создает текстовый блок.
+        private Label CreateLabel(string text)
         {
             text = text.Replace("&amp;", "&"); /// Замена кода на символ &.
             text = text.Replace("&quot;", "\""); /// Замена кода на символ ".
@@ -133,7 +189,7 @@ namespace MoexInfoMobile.HtmlFormat
             Label label = new Label
             {
                 Text = text,
-                Style = labelStyle
+                Style = (Style)HtmlStyles["Label"]
             };
 
             return label;
@@ -141,55 +197,98 @@ namespace MoexInfoMobile.HtmlFormat
 
 
 
-        // Метод создает таблицу.
-        private View CreateTable(XmlElement element)
+        // Метод создает кнопку для переходу по ссылке.
+        private LinkLabel CreateLinkLabel(XmlElement element)
         {
-            foreach (XmlNode tNode in element.ChildNodes)
+            try
             {
-                XmlElement tElement = tNode as XmlElement; /// <thead> или <tbody>
+                string path = element.GetAttribute("href");
+                string text = element.InnerText;
+                Uri uri = new Uri(path);
 
-                int rowsCount = tElement.ChildNodes.Count; /// Количество полей таблицы.
-                int columnsCount = tElement.ChildNodes[0].ChildNodes.Count; /// Количество атрибутов таблицы.
+                LinkLabel linkLabel = new LinkLabel
+                {
+                    Uri = uri,
+                    Text = text,
+                    Style = (Style)HtmlStyles["LinkLabel"]
+                };
+                
+                return linkLabel;
+            }
+            catch
+            {
+                // TODO: Добавить обработку исключений.
+                return null;
+            }
+        }
 
+
+
+        // Метод создает таблицу.
+        private View CreateTable(XmlElement tableElement)
+        {
+            try
+            {
+                /// Первый элемент <thead> или <tbody>.
+                XmlElement firstTElement = tableElement.ChildNodes[0] as XmlElement;
+                /// Количество полей и атрибутов таблицы.
+                int rowsCount = firstTElement.ChildNodes.Count;
+                int columnsCount = firstTElement.ChildNodes[0].ChildNodes.Count;
+
+                /// Массив содержимого ячеек таблицы.
                 View[,] cellsContent = new View[rowsCount, columnsCount];
 
-                /// Перебор полей таблицы.
-                for (int i = 0; i < rowsCount; i++)
+                foreach (XmlNode tNode in tableElement.ChildNodes)
                 {
-                    /// Перебор ячеек таблицы в стрке.
-                    int j = 0;
-                    foreach (XmlNode cellNode in tElement.ChildNodes[i])
+                    /// Перебор полей таблицы.
+                    for (int i = 0; i < rowsCount; i++)
                     {
-                        View cellContent;
-                        /// Если содержимое ячейки является html-разметкой...
-                        if (IsHtmlText(cellNode.InnerText))
+                        /// Перебор ячеек таблицы в стрке.
+                        int j = 0;
+                        foreach (XmlNode cellNode in tNode.ChildNodes[i])
                         {
-                            /// То оно декодируется.
-                            cellContent = DecodeElement(cellNode as XmlElement);
+                            View cellContent = CreateCellContentElement(cellNode as XmlElement);
+                            cellsContent[i, j] = cellContent;
+                            j++;
                         }
-                        /// Если содержимое ячейки является обычным текстом...
-                        else
-                        {
-                            /// То создается объект Label.
-                            cellContent = new Label { Text = cellNode.InnerText };
-                        }
-
-                        cellsContent[i, j] = cellContent;
-                        j++;
                     }
                 }
 
-                /// Инициализация таблицы.
-                Table table = new Table
-                {
-                    Style = (Style)HtmlStyles["Table"]
-                };
-
+                /// Создание и инициализация таблицы.
+                HtmlTableView table = new HtmlTableView();
+                table.Style = (Style)HtmlStyles["Table"];
                 table.InitializeTable(cellsContent);
                 return table;
             }
+            catch
+            {
+                // TODO: Добавить обработку исключений.
+            }
 
             return null;
+        }
+
+
+
+        // Метод создает содержимое ячейки таблицы.
+        private View CreateCellContentElement(XmlElement cellElement)
+        {
+            View cellContent;
+
+            /// Если содержимое ячейки является html-разметкой...
+            if (IsHtmlText(cellElement.InnerText))
+            {
+                /// То оно декодируется.
+                cellContent = DecodeElement(cellElement as XmlElement);
+            }
+            /// Если содержимое ячейки является обычным текстом...
+            else
+            {
+                /// То создается объект Label.
+                cellContent = new Label { Text = cellElement.InnerText };
+            }
+
+            return cellContent;
         }
 
 
@@ -200,6 +299,64 @@ namespace MoexInfoMobile.HtmlFormat
             Label label = CreateLabel(text);
             label.FontAttributes = FontAttributes.Bold;
             return label;
+        }
+
+
+
+        // Метод создает неупорядоченный список.
+        private View CreateUnorderedList(XmlElement ulElement)
+        {
+            try
+            {
+                HtmlUnorderedListView ulView = new HtmlUnorderedListView();
+                ulView.Style = (Style)HtmlStyles["UnorderedList"];
+                ulView.InitializeList(GetLiValues(ulElement));
+                return ulView;
+            }
+            catch
+            {
+                // TODO: Добавить обработку исключений.
+                return null;
+            }
+        }
+
+
+
+        // Метод создает нумерованный список.
+        private View CreateNumberedList(XmlElement olElement)
+        {
+            try
+            {
+                HtmlNumberedListView olView = new HtmlNumberedListView
+                {
+                    MarkerCharacter = '.',
+                    Style = (Style)HtmlStyles["NumberedList"]
+                };
+                
+                olView.InitializeList(GetLiValues(olElement));
+                return olView;
+            }
+            catch
+            {
+                // TODO: Добавить обработку исключений.
+                return null;
+            }
+            
+        }
+
+
+
+        // Метод извелкает значения элементов списка.
+        private string[] GetLiValues(XmlNode element)
+        {
+            List<string> values = new List<string>();
+
+            foreach (XmlNode liNode in element)
+            {
+                values.Add(liNode.InnerText);
+            }
+
+            return values.ToArray();
         }
     }
 }

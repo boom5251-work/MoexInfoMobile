@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MoexInfoMobile.Custom.HtmlListView">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style TargetType="StackLayout" x:Key="ListContainer">
+                <Setter Property="Orientation" Value="Vertical" />
+                <Setter Property="Spacing" Value="0" />
+            </Style>
+
+            <Style TargetType="Grid" x:Name="rowContainerStyle">
+                <Setter Property="ColumnDefinitions">
+                    <Setter.Value>
+                        <ColumnDefinitionCollection>
+                            <ColumnDefinition Width="20" />
+                            <ColumnDefinition Width="*" />
+                        </ColumnDefinitionCollection>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <ContentView.Content>
+        <StackLayout x:Name="_list" Style="{StaticResource ListContainer}" />
+    </ContentView.Content>
+</ContentView>

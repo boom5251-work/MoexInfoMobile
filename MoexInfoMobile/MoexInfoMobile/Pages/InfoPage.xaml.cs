@@ -47,19 +47,23 @@ namespace MoexInfoMobile.Pages
                 string publishedAt = headlineInfo.PublishedAt.ToString(format, CultureInfo.InvariantCulture);
 
                 /// Создание элементов интерфейса.
-                HtmlDecoder htmlReader = new HtmlDecoder(Resources);
+                HtmlDecoder htmlDecoder = new HtmlDecoder(htmlStyles);
                 
-                if (htmlReader.IsHtmlText(headlineInfo.Body))
+                if (HtmlDecoder.IsHtmlText(headlineInfo.Body))
                 {
                     try
                     {
-                        List<View> views = htmlReader.DecodeHtml(headlineInfo.Body);
+                        List<View> views = htmlDecoder.DecodeHtml(headlineInfo.Body);
                         ShowInfo(headlineInfo.Title, publishedAt, views.ToArray());
                     }
                     catch (XmlException ex)
                     {
                         // TODO: XmlExeption
                         Debug.WriteLine(ex);
+                    }
+                    catch
+                    {
+                        // TODO: Добавить обработку исключений.
                     }
                 }
                 else

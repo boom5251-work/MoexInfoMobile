@@ -7,12 +7,12 @@
 
 
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <Style TargetType="custom:TableCell" x:Key="TableCell">
+        <ResourceDictionary x:Name="htmlStyles">
+            <Style TargetType="custom:HtmlTableCell" x:Key="TableCell">
                 <Setter Property="BackgroundColor" Value="{StaticResource ClassicChalk}" />
             </Style>
 
-            <Style TargetType="custom:TableCell" x:Key="EmptyTableCell">
+            <Style TargetType="custom:HtmlTableCell" x:Key="EmptyTableCell">
                 <Setter Property="BackgroundColor" Value="{StaticResource LightGrey}" />
             </Style>
             
@@ -23,7 +23,7 @@
                 <Setter Property="Margin" Value="10" />
             </Style>
 
-            <Style TargetType="custom:Table" x:Key="Table">
+            <Style TargetType="custom:HtmlTableView" x:Key="Table">
                 <Setter Property="BackgroundColor" Value="{StaticResource WolfGrey}" />
                 <Setter Property="CellStyle" Value="{StaticResource TableCell}" />
                 <Setter Property="EmptyCellStyle" Value="{StaticResource EmptyTableCell}" />
@@ -37,6 +37,49 @@
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="Margin" Value="0, 0, 0, 10" />
                 <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
+            </Style>
+
+            <Style TargetType="custom:LinkLabel" x:Key="LinkLabel">
+                <Setter Property="FontFamily" Value="IntroRegular" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="#42AAFF" />
+                <Setter Property="TextDecorations" Value="Underline" />
+            </Style>
+
+
+            <Style TargetType="Label" x:Key="ListText">
+                <Setter Property="FontFamily" Value="IntroRegularAlt" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
+            </Style>
+
+            <Style TargetType="Label" x:Key="NListMarker">
+                <Setter Property="FontFamily" Value="IntroBoldAlt" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
+                <Setter Property="VerticalOptions" Value="Start" />
+            </Style>
+
+            <Style TargetType="Frame" x:Key="UListMarker">
+                <Setter Property="BackgroundColor" Value="{StaticResource WolfGrey}" />
+                <Setter Property="CornerRadius" Value="5" />
+                <Setter Property="HasShadow" Value="False" />
+                <Setter Property="HeightRequest" Value="10" />
+                <Setter Property="Margin" Value="5, 9, 5, 0" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="WidthRequest" Value="10" />
+            </Style>
+            
+            <Style TargetType="custom:HtmlUnorderedListView" x:Key="UnorderedList">
+                <Setter Property="Margin" Value="0, 10, 0, 20" />
+                <Setter Property="MarkerStyle" Value="{StaticResource UListMarker}" />
+                <Setter Property="TextStyle" Value="{StaticResource ListText}" />
+            </Style>
+
+            <Style TargetType="custom:HtmlNumberedListView" x:Key="NumberedList">
+                <Setter Property="MarkerStyle" Value="{StaticResource NListMarker}" />
+                <Setter Property="TextStyle" Value="{StaticResource ListText}" />
             </Style>
         </ResourceDictionary>
 
@@ -74,7 +117,7 @@
             </Style>
 
             <Style TargetType="Label" x:Key="TitleLabel">
-                <Setter Property="FontFamily" Value="IntroBoldAlt" />
+                <Setter Property="FontFamily" Value="IntroBold" />
                 <Setter Property="FontSize" Value="26" />
                 <Setter Property="Margin" Value="0, 0, 0, 10" />
                 <Setter Property="TextColor" Value="{StaticResource MidnightBadger}" />
