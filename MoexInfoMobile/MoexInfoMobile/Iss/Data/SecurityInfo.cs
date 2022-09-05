@@ -6,7 +6,7 @@ namespace MoexInfoMobile.Iss.Data
     {
         protected SecurityInfo(XmlNode rows)
         {
-            /// Получение основных значений атрибутов title по значению атрибутов name.
+            // Получение основных значений атрибутов title по значению атрибутов name.
             SecId = GetValueWithName(rows, "SECID");
             Name = GetValueWithName(rows, "NAME");
             ShortName = GetValueWithName(rows, "SHORTNAME");
@@ -17,23 +17,40 @@ namespace MoexInfoMobile.Iss.Data
 
 
 
-        public string SecId { get; } /// Идентификатор ценной бумаги (строковый).
-        public string Name { get; } /// Название ценной бумаги.
-        public string ShortName { get; } /// Короткое название ценной бумаги.
-        public string LatName { get; } /// Латинское название.
-        public string TypeName { get; } /// Вид ценной бумаги.
-        public string GroupName { get; } /// Тип ценной бумаги.
+        /// <summary>Идентификатор ценной бумаги (строковый).</summary>
+        public string SecId { get; } = string.Empty;
+
+        /// <summary>Название ценной бумаги.</summary>
+        public string Name { get; } = string.Empty;
+
+        /// <summary>Короткое название ценной бумаги.</summary>
+        public string ShortName { get; } = string.Empty;
+
+        /// <summary>Латинское название.</summary>
+        public string LatName { get; } = string.Empty;
+
+        /// <summary>Вид ценной бумаги.</summary>
+        public string TypeName { get; } = string.Empty;
+
+        /// <summary>Тип ценной бумаги.</summary>
+        public string GroupName { get; } = string.Empty;
 
 
 
-        // Метод возвращает элемент row по атрибуту name.
+
+        /// <summary>
+        /// Метод возвращает элемент row по атрибуту name.
+        /// </summary>
+        /// <param name="rows">Объект ценной бумаги.</param>
+        /// <param name="name">Название свойства.</param>
+        /// <returns></returns>
         protected static string GetValueWithName(XmlNode rows, string name)
         {
             try
             {
                 for (int i = 0; i < rows.ChildNodes.Count; i++)
                 {
-                    XmlNode row = rows.ChildNodes[i];
+                    var row = rows.ChildNodes[i];
 
                     if (row.Attributes["name"].Value == name)
                     {

@@ -2,9 +2,12 @@
 
 namespace MoexInfoMobile.Custom
 {
+    /// <summary>
+    /// Пользовательский фрейм.
+    /// </summary>
     public class BackgroundFrame : Frame
     {
-        // Слои фона элемента.
+        /// <summary>Слои фона элемента.</summary>
         public BackgroundResource BackgroundResource
         {
             get { return (BackgroundResource)GetValue(BackgroundResourceProperty); }

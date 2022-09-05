@@ -8,7 +8,6 @@ namespace MoexInfoMobile.Iss.Data
     {
         private Candle(double open, double close, double high, double low)
         {
-
             Open = open;
             Close = close;
             High = high;
@@ -17,41 +16,52 @@ namespace MoexInfoMobile.Iss.Data
 
 
 
-        public double Open { get; private set; } /// Цена открытия.
-        public double Close { get; private set; } /// Цена закрытия.
-        public double High { get; private set;  } /// Наибольшее значение.
-        public double Low { get; private set;  } /// Наименьшее значение.
+        /// <summary>Цена открытия.</summary>
+        public double Open { get; private set; }
 
-        public uint Volume { get; private set; } /// Объем бумаг.
+        /// <summary>Цена закрытия.</summary>
+        public double Close { get; private set; }
 
-        public DateTime Begin { get; private set; } /// Дата и время начала торгов.
-        public DateTime End { get; private set; } /// Дата и ввремя окончания торгов.
+        /// <summary>Наибольшее значение.</summary>
+        public double High { get; private set; }
+
+        /// <summary>Наименьшее значение.</summary>
+        public double Low { get; private set; }
+
+        /// <summary>Объем бумаг.</summary>
+        public uint Volume { get; private set; }
+
+        /// <summary>Дата и время начала торгов.</summary>
+        public DateTime Begin { get; private set; }
+
+        /// <summary>Дата и ввремя окончания торгов.</summary>
+        public DateTime End { get; private set; }
 
 
 
-        // Метод проверяет, возможно ли создать экземпляр данного класса на основе XmlNode.
+        /// <summary>
+        /// Метод проверяет, возможно ли создать экземпляр данного класса на основе XmlNode.
+        /// </summary>
         public static bool CanExtractFromNode(XmlNode row, out Candle candle)
         {
-            candle = null;
-
             try
             {
-                /// Извлечение стоимости.
-                double open = double.Parse(row.Attributes["open"].Value.Replace('.', ','));
-                double close = double.Parse(row.Attributes["close"].Value.Replace('.', ','));
-                double high = double.Parse(row.Attributes["high"].Value.Replace('.', ','));
-                double low = double.Parse(row.Attributes["low"].Value.Replace('.', ','));
+                // Извлечение стоимости.
+                double open = GetNumber(row.Attributes["open"].Value);
+                double close = GetNumber(row.Attributes["close"].Value);
+                double high = GetNumber(row.Attributes["high"].Value);
+                double low = GetNumber(row.Attributes["low"].Value);
 
-                /// Извлечение объема бумаг.
+                // Извлечение объема бумаг.
                 uint volume = uint.Parse(row.Attributes["volume"].Value);
 
-                /// Извлечение дат начала и окончания торгов.
+                // Извлечение дат начала и окончания торгов.
                 string beginStr = row.Attributes["begin"].Value;
                 string endStr = row.Attributes["end"].Value;
                 string format = "yyyy-MM-dd HH:mm:ss";
 
-                DateTime begin = DateTime.ParseExact(beginStr, format, CultureInfo.InvariantCulture);
-                DateTime end = DateTime.ParseExact(endStr, format, CultureInfo.InvariantCulture);
+                var begin = DateTime.ParseExact(beginStr, format, CultureInfo.InvariantCulture);
+                var end = DateTime.ParseExact(endStr, format, CultureInfo.InvariantCulture);
 
                 candle = new Candle(open, close, high, low)
                 {
@@ -62,10 +72,29 @@ namespace MoexInfoMobile.Iss.Data
 
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.ToString());
+                candle = null;
                 return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Извлекает число с плавающей точкой из строки.
+        /// </summary>
+        /// <param name="strVal">Строка.</param>
+        /// <returns>Число с плавающией точкой.</returns>
+        /// <exception cref="FormatException">Строка не является числом.</exception>
+        private static double GetNumber(string strVal)
+        {
+            if (!string.IsNullOrEmpty(strVal))
+            {
+                return double.Parse(strVal.Replace('.', ','));
+            }
+            else
+            {
+                throw new FormatException();
             }
         }
     }

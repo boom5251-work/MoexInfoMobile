@@ -8,12 +8,14 @@ namespace MoexInfoMobile.Iss.Data
         {
             try
             {
-                Body = row.Attributes["body"].Value;
+                HtmlBody = row.Attributes["body"].Value;
             }
             catch { }
         }
 
 
-        public string Body { get; } /// Текст новости.
+
+        /// <summary>Текст новости.</summary>
+        public string HtmlBody { get; } = string.Empty;
     }
 }

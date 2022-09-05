@@ -2,33 +2,42 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:MoexInfoMobile.Custom"
+             xmlns:customhtml="clr-namespace:MoexInfoMobile.Custom.Html"
              x:Class="MoexInfoMobile.Pages.CellInfoPage"
              BackgroundColor="{StaticResource WolfGrey}">
 
 
     <ContentPage.Resources>
         <ResourceDictionary x:Name="htmlStyles">
-            <Style TargetType="custom:HtmlTableCell" x:Key="TableCell">
+            <Style TargetType="customhtml:HtmlTableCell" x:Key="TableCell">
                 <Setter Property="BackgroundColor" Value="{StaticResource ClassicChalk}" />
             </Style>
 
-            <Style TargetType="custom:HtmlTableCell" x:Key="EmptyTableCell">
+            <Style TargetType="customhtml:HtmlTableCell" x:Key="EmptyTableCell">
                 <Setter Property="BackgroundColor" Value="{StaticResource LightGrey}" />
             </Style>
-            
-            <Style TargetType="Label" x:Key="TableText">
+
+            <Style TargetType="Label" x:Key="TableTextTemplate">
                 <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
-                <Setter Property="FontFamily" Value="IntroRegular" />
                 <Setter Property="FontSize" Value="14" />
                 <Setter Property="Margin" Value="10" />
             </Style>
 
-            <Style TargetType="custom:HtmlTableView" x:Key="Table">
+            <Style TargetType="Label" x:Key="TableText" BasedOn="{StaticResource TableTextTemplate}">
+                <Setter Property="FontFamily" Value="IntroRegular" />
+            </Style>
+
+            <Style TargetType="Label" x:Key="TableTextBold" BasedOn="{StaticResource TableTextTemplate}">
+                <Setter Property="FontFamily" Value="IntroBold" />
+            </Style>
+
+            <Style TargetType="customhtml:HtmlTableView" x:Key="Table">
                 <Setter Property="BackgroundColor" Value="{StaticResource WolfGrey}" />
                 <Setter Property="CellStyle" Value="{StaticResource TableCell}" />
                 <Setter Property="EmptyCellStyle" Value="{StaticResource EmptyTableCell}" />
                 <Setter Property="Margin" Value="0, 0, 0, 10" />
                 <Setter Property="TextStyle" Value="{StaticResource TableText}" />
+                <Setter Property="TextStyleBold" Value="{StaticResource TableTextBold}" />
             </Style>
 
 
@@ -39,7 +48,7 @@
                 <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
             </Style>
 
-            <Style TargetType="custom:LinkLabel" x:Key="LinkLabel">
+            <Style TargetType="customhtml:HtmlLinkLabel" x:Key="LinkLabel">
                 <Setter Property="FontFamily" Value="IntroRegular" />
                 <Setter Property="FontSize" Value="18" />
                 <Setter Property="TextColor" Value="#42AAFF" />
@@ -70,14 +79,14 @@
                 <Setter Property="VerticalOptions" Value="Start" />
                 <Setter Property="WidthRequest" Value="10" />
             </Style>
-            
-            <Style TargetType="custom:HtmlUnorderedListView" x:Key="UnorderedList">
+
+            <Style TargetType="customhtml:HtmlUnorderedListView" x:Key="UnorderedList">
                 <Setter Property="Margin" Value="0, 10, 0, 20" />
                 <Setter Property="MarkerStyle" Value="{StaticResource UListMarker}" />
                 <Setter Property="TextStyle" Value="{StaticResource ListText}" />
             </Style>
 
-            <Style TargetType="custom:HtmlNumberedListView" x:Key="NumberedList">
+            <Style TargetType="customhtml:HtmlNumberedListView" x:Key="NumberedList">
                 <Setter Property="MarkerStyle" Value="{StaticResource NListMarker}" />
                 <Setter Property="TextStyle" Value="{StaticResource ListText}" />
             </Style>

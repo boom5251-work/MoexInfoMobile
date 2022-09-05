@@ -10,29 +10,51 @@ namespace MoexInfoMobile.Iss.Api
 {
     public static class Securities
     {
-        // Метод возвращает задачу с обобщенным типом "список ценных бумаг".
+        /// <summary>Акции.</summary>
+        public const string StockBondsGroup = "stock_bonds";
+
+        /// <summary>Облигации.</summary>
+        public const string StockSharesGroup = "stock_shares";
+
+        /// <summary>Фьючерсы.</summary>
+        public const string FuturesFortsGroup = "futures_forts";
+        
+
+
+        /// <summary>
+        /// Инициализирует получение списка ценных бумаг.
+        /// </summary>
+        /// <param name="start">Начиная с.</param>
+        /// <param name="securityGroup">Тип ценных бумаг.</param>
+        /// <param name="q">Соответсвует значению.</param>
+        /// <returns>Задача со списком ценных бумаг.</returns>
         public static async Task<List<Security>> GetSecurities(uint start, string securityGroup, string q = "")
         {
-            List<Security> securities = new List<Security>(); /// Списко ценных бумаг.
+            // Списко ценных бумаг.
+            List<Security> securities = new List<Security>(); 
 
             await Task.Run(() =>
             {
                 try
                 {
-                    string path = $"https://iss.moex.com/iss/securities.xml?limit=100&group_by=group&group_by_filter={ securityGroup }&start={ start }&q={ q }";
-                    Uri uri = new Uri(path); /// Путь http-запроса.
+                    string path = $"https://iss.moex.com/iss/securities.xml?limit=20&group_by=group" + 
+                        $"&group_by_filter={securityGroup}&start={start}&q={q}";
 
-                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+                    // Путь http-запроса.
+                    var uri = new Uri(path);
 
-                    /// Получение элемента rows, который содержит элементы ценных бумаг (row).
-                    XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    // Получение xml-документа.
+                    var document = ReqRes.GetDocumentByUri(uri); 
 
-                    /// Перебор всех элементов row. Создание экземпляров ценных бумаг.
+                    // Получение элемента rows, который содержит элементы ценных бумаг (row).
+                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+
+                    // Перебор всех элементов row. Создание экземпляров ценных бумаг.
                     for (int i = 0; i < rows.ChildNodes.Count; i++)
                     {
-                        XmlNode row = rows.ChildNodes[i];
+                        var row = rows.ChildNodes[i];
 
-                        /// Если данные ценной бумаги можно извлечь, то она добавляется в список.
+                        // Если данные ценной бумаги можно извлечь, то она добавляется в список.
                         if (Security.CanExtractFromNode(row, out Security security))
                         {
                             securities.Add(security);
@@ -54,32 +76,40 @@ namespace MoexInfoMobile.Iss.Api
 
 
 
-        // Метод возвращает задачу с обобщенным типом "информация о ценной бумаге".
+        /// <summary>
+        /// Инициализирует получение информации о ценной бумаге.</summary>
+        /// <param name="seqId">Идентификатор ценной бумаги.</param>
+        /// <param name="group">Группа ценной бумаги.</param>
+        /// <returns>Задача с информацией о ценной бумаге.</returns>
         public static async Task<SecurityInfo> GetSecurityInfo(string seqId, string group)
         {
-            SecurityInfo securityInfo = null; /// Информация о ценной бумаге.
+            // Информация о ценной бумаге.
+            SecurityInfo securityInfo = null; 
 
             await Task.Run(() =>
             {
                 try
                 {
                     string path = $"https://iss.moex.com/iss/securities/{ seqId }.xml";
-                    Uri uri = new Uri(path); /// Путь http-запроса.
 
-                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+                    // Путь http-запроса.
+                    var uri = new Uri(path);
 
-                    /// Получение элемента rows, который содержит подробную информацию о ценной бумаге.
-                    XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    // Получение xml-документа.
+                    var document = ReqRes.GetDocumentByUri(uri); 
+
+                    // Получение элемента rows, который содержит подробную информацию о ценной бумаге.
+                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
 
                     switch (group)
                     {
-                        case "futures_forts":
+                        case FuturesFortsGroup:
                             securityInfo = new FuturesFortInfo(rows);
                             break;
-                        case "stock_bonds":
+                        case StockBondsGroup:
                             securityInfo = new StockBondInfo(rows);
                             break;
-                        case "stock_shares":
+                        case StockSharesGroup:
                             securityInfo = new StockShareInfo(rows);
                             break;
                     }
@@ -99,36 +129,48 @@ namespace MoexInfoMobile.Iss.Api
 
 
 
-        // Метод возвращает задачу с обобщенным типом "кортеж: дата начала торгов, дата окончания торгов".
+        /// <summary>
+        /// Инициализирует получение дат начала и окончания торгов.
+        /// </summary>
+        /// <param name="secId">Идентификатор ценной бумаги.</param>
+        /// <returns>Задача с датой начала и окначания торгов.</returns>
         public static async Task<Tuple<DateTime, DateTime>> GetSecurityAggregatesDates(string secId)
         {
-            Tuple<DateTime, DateTime> dates = null; /// Кортеж: дата начала торгов, дата окончания торгов.
+            // Кортеж: дата начала торгов, дата окончания торгов.
+            Tuple<DateTime, DateTime> dates = null;
 
             await Task.Run(() =>
             {
                 try
                 {
                     string path = $"https://iss.moex.com/iss/securities/{ secId }/aggregates.xml";
-                    Uri uri = new Uri(path); /// Путь http-запроса.
 
-                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+                    // Путь http-запроса.
+                    var uri = new Uri(path);
 
-                    /// Получение элемента rows, который содержит даты начала и окончания торгов.
-                    XmlElement rows = document.DocumentElement.LastChild.LastChild as XmlElement;
+                    // Получение xml-документа.
+                    var document = ReqRes.GetDocumentByUri(uri);
 
-                    /// Если строка row есть, то даты извлекаются.
+                    // Получение элемента rows, который содержит даты начала и окончания торгов.
+                    var rows = document.DocumentElement.LastChild.LastChild as XmlElement;
+
+                    // Если строка row есть, то даты извлекаются.
                     if (rows.HasChildNodes)
                     {
-                        XmlNode row = rows.FirstChild; /// Строка row.
+                        // Строка row.
+                        var row = rows.FirstChild;
 
-                        string fromStr = row.Attributes["from"].Value; /// Начало торгов.
-                        string tillStr = row.Attributes["till"].Value; /// Окончание торгов.
+                        // Начало торгов.
+                        string fromStr = row.Attributes["from"].Value;
+
+                        // Окончание торгов.
+                        string tillStr = row.Attributes["till"].Value;
 
                         string format = "yyyy-mm-dd";
 
-                        /// Получение даты начала и окончания торгов.
-                        DateTime from = DateTime.ParseExact(fromStr, format, CultureInfo.InvariantCulture);
-                        DateTime till = DateTime.ParseExact(tillStr, format, CultureInfo.InvariantCulture);
+                        // Получение даты начала и окончания торгов.
+                        var from = DateTime.ParseExact(fromStr, format, CultureInfo.InvariantCulture);
+                        var till = DateTime.ParseExact(tillStr, format, CultureInfo.InvariantCulture);
 
                         dates = new Tuple<DateTime, DateTime>(from, till);
                     }

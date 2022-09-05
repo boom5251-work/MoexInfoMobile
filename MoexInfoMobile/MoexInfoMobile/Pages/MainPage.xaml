@@ -96,12 +96,17 @@
             </Style>
 
 
-            <Style TargetType="custom:InfoCellView" x:Key="InfoCellViews">
+            <Style TargetType="custom:InfoCellView" x:Name="infoCellViewStyle">
+                <Setter Property="Margin" Value="0, 2, 0, 2" />
+            </Style>
+
+            <Style TargetType="custom:SecurityCellView" x:Name="securityCellViewStyle">
                 <Setter Property="Margin" Value="0, 2, 0, 2" />
             </Style>
 
 
-            <Style TargetType="ScrollView" x:Key="SecuritiesTypeScroll">
+            <Style TargetType="custom:EditableBarScrollView" x:Key="SecuritiesTypeScroll">
+                <Setter Property="HorizontalBarEnabled" Value="False" />
                 <Setter Property="Padding" Value="25, 0" />
                 <Setter Property="Orientation" Value="Horizontal" />
             </Style>
@@ -157,25 +162,30 @@
                         <StackLayout>
                             <Label Style="{StaticResource SecuritiesTitle}" />
                             
-                            <ScrollView Style="{StaticResource SecuritiesTypeScroll}">
+                            <custom:EditableBarScrollView Style="{StaticResource SecuritiesTypeScroll}">
                                 <StackLayout x:Name="securityButtonsContainer" Style="{StaticResource SecuritiesTypeContainer}">
                                     <Button Text="Акции"
                                             x:Name="stockBondsToggleButton"
+                                            x:Uid="stockBondsToggleButton"
                                             Style="{StaticResource SecuritiesToggleButtons}"
                                             Clicked="SecurityButton_Clicked" />
                                     
                                     <Button Text="Облигации"
+                                            x:Name="stockSharesToggleButton"
+                                            x:Uid="stockSharesToggleButton"
                                             Style="{StaticResource SecuritiesToggleButtons}"
                                             Clicked="SecurityButton_Clicked"/>
                                     
                                     <Button Text="Фьючерсные контракты"
+                                            x:Name="futuresFortsToggleButton"
+                                            x:Uid="futuresFortsToggleButton"
                                             Style="{StaticResource SecuritiesToggleButtons}"
                                             Clicked="SecurityButton_Clicked"/>
                                 </StackLayout>
-                            </ScrollView>
+                            </custom:EditableBarScrollView>
                             
                             <ScrollView Style="{StaticResource Scroll}">
-                                <StackLayout>
+                                <StackLayout x:Name="securitiesContainers">
                                     <StackLayout x:Name="stockBondsContainer" Style="{StaticResource ScrollContentContainer}" />
                                     <StackLayout x:Name="stockSharesContainer" Style="{StaticResource ScrollContentContainer}" />
                                     <StackLayout x:Name="futuresFortsContainer" Style="{StaticResource ScrollContentContainer}" />

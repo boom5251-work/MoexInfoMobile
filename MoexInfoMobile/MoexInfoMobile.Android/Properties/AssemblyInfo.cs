@@ -31,3 +31,4 @@ using Xamarin.Forms;
 
 // Рендереры.
 [assembly: ExportRenderer(typeof(BackgroundFrame), typeof(BackgroundFrameRenderer))]
+[assembly: ExportRenderer(typeof(EditableBarScrollView), typeof(EditableBarScrollViewRenderer))]

@@ -1,26 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="MoexInfoMobile.Iss.Data.Security">
-    <Position X="0.5" Y="0.5" Width="2.25" />
+    <Position X="0.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAIIAAAAAAAAgAAABCAIAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAEAABCAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Iss\Data\Security.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.SecurityInfo">
-    <Position X="3.75" Y="0.5" Width="1.75" />
+    <Position X="3.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAIAAAAAAAAAQBAAAAAJAAAAAACAAAAAE=</HashCode>
       <FileName>Iss\Data\SecurityInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.StockBondInfo">
-    <Position X="6" Y="3" Width="1.75" />
+    <Position X="5.75" Y="3" Width="1.75" />
     <InheritanceLine Type="MoexInfoMobile.Iss.Data.SecurityInfo" FixedFromPoint="true">
       <Path>
-        <Point X="5.5" Y="2.75" />
-        <Point X="6.875" Y="2.75" />
-        <Point X="6.875" Y="3" />
+        <Point X="5.25" Y="2.75" />
+        <Point X="6.625" Y="2.75" />
+        <Point X="6.625" Y="3" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -29,14 +29,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.StockShareInfo">
-    <Position X="6" Y="5.75" Width="1.75" />
+    <Position X="5.75" Y="5.75" Width="1.75" />
     <InheritanceLine Type="MoexInfoMobile.Iss.Data.SecurityInfo" FixedFromPoint="true">
       <Path>
-        <Point X="5.5" Y="3" />
-        <Point X="5.74" Y="3" />
-        <Point X="5.74" Y="5.51" />
-        <Point X="6.875" Y="5.51" />
-        <Point X="6.875" Y="5.75" />
+        <Point X="5.25" Y="3" />
+        <Point X="5.49" Y="3" />
+        <Point X="5.49" Y="5.51" />
+        <Point X="6.625" Y="5.51" />
+        <Point X="6.625" Y="5.75" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -45,49 +45,49 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.FuturesFortInfo">
-    <Position X="6" Y="0.5" Width="1.75" />
+    <Position X="5.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAQAAAAAQAAA=</HashCode>
       <FileName>Iss\Data\FuturesFortInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.Candle">
-    <Position X="8.75" Y="0.5" Width="1.75" />
+    <Position X="8.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAIAAAAgAAAAAAAAgCEAAAAAIAAACAAAA=</HashCode>
       <FileName>Iss\Data\Candle.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.HeadlineInfo">
-    <Position X="11.5" Y="3" Width="1.75" />
+    <Position X="11.25" Y="3" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
       <FileName>Iss\Data\HeadlineInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.Headline">
-    <Position X="11.5" Y="0.5" Width="1.75" />
+    <Position X="11.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAEAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Iss\Data\Headline.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.Event">
-    <Position X="14.25" Y="0.5" Width="1.75" />
+    <Position X="14" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AgACAAABAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Iss\Data\Event.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="MoexInfoMobile.Iss.Data.EventInfo">
-    <Position X="14.25" Y="3.25" Width="1.75" />
+    <Position X="14" Y="3.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAEIAAAAAAAI=</HashCode>
       <FileName>Iss\Data\EventInfo.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="MoexInfoMobile.Pages.SiteInfoType">
-    <Position X="11.5" Y="5.25" Width="1.75" />
+    <Position X="11.25" Y="5.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAQAAA=</HashCode>
       <FileName>Iss\Data\SiteInfoType.cs</FileName>

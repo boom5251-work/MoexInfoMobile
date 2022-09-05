@@ -23,9 +23,16 @@ namespace MoexInfoMobile.Iss.Data
 
 
 
-        public ulong Id { get; private set; } /// Идентификатор события.
-        public string Title { get; private set; } /// Заголовок.
-        public DateTime From { get; private set; } /// Дата и время начала события.
-        public DateTime ModifiedAt { get; private set; } /// Дата изменения.
+        /// <summary>Идентификатор события.</summary>
+        public ulong Id { get; private set; }
+
+        /// <summary>Заголовок.</summary>
+        public string Title { get; private set; } = string.Empty;
+
+        /// <summary>Дата и время начала события.</summary>
+        public DateTime From { get; private set; }
+
+        /// <summary>Дата изменения.</summary>
+        public DateTime ModifiedAt { get; private set; }
     }
 }

@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace MoexInfoMobile.Droid
 {
-    [Activity(Label = "MoexInfoMobile", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
+    [Activity(Label = "iMOEX", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
     public class MainActivity : FormsAppCompatActivity, OperatingSystem
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -32,10 +32,9 @@ namespace MoexInfoMobile.Droid
 
 
 
-        // Метод создает toast-уведомление.
         public void ShowToastNotification(string message, bool isLong = false)
         {
-            /// Установка продолжительности уведомления.
+            // Установка продолжительности уведомления.
             ToastLength length;
 
             if (isLong)
@@ -47,16 +46,15 @@ namespace MoexInfoMobile.Droid
                 length = ToastLength.Short;
             }
 
-            /// Создание уведомления.
-            Toast notification = Toast.MakeText(ApplicationContext, message, length);
+            // Создание уведомления.
+            var notification = Toast.MakeText(ApplicationContext, message, length);
 
-            /// Отображение уведомления.
+            // Отображение уведомления.
             notification.Show();
         }
 
 
 
-        // Метод изменяет цвет statusBar.
         public void ChangeStatusBarColor(Color color)
         {
             Window.SetStatusBarColor(color.ToAndroid());

@@ -1,10 +1,12 @@
 ﻿using Xamarin.Forms;
 
-namespace MoexInfoMobile.Custom
+namespace MoexInfoMobile.Custom.Html
 {
+    /// <summary>
+    /// Элемент управления, представляющий неупорядоченный список список.
+    /// </summary>
     public sealed class HtmlUnorderedListView : HtmlListView
     {
-        // Метод инициализирует список.
         public override void InitializeList(string[] values)
         {
             foreach (string text in values)
@@ -15,11 +17,13 @@ namespace MoexInfoMobile.Custom
         }
 
 
-        // Метод создает маркер.
         protected override View CreateMarker()
         {
-            Frame pointMarker = new Frame();
-            pointMarker.BindingContext = this;
+            Frame pointMarker = new Frame
+            {
+                BindingContext = this
+            };
+
             pointMarker.SetBinding(StyleProperty, nameof(MarkerStyle));
             return pointMarker;
         }

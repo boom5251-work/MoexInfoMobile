@@ -9,7 +9,11 @@ namespace MoexInfoMobile.Iss.Api
 {
     public static class Events
     {
-        // Метод возвращает задачу с обобщенным типом "список событий".
+        /// <summary>
+        /// Инициализирует получение списка событий.
+        /// </summary>
+        /// <param name="start">Начиная с.</param>
+        /// <returns>Задача со списком событий.</returns>
         public static async Task<List<Event>> GetEvents(uint start)
         {
             List<Event> events = new List<Event>();
@@ -19,14 +23,17 @@ namespace MoexInfoMobile.Iss.Api
                 try
                 {
                     string path = $"https://iss.moex.com/iss/events.xml?start={ start }";
-                    Uri uri = new Uri(path); /// Путь http-запроса.
 
-                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+                    // Путь http-запроса.
+                    var uri = new Uri(path);
 
-                    /// Получение элемента rows, который содержит элементы событий (row).
-                    XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    // Получение xml-документа.
+                    var document = ReqRes.GetDocumentByUri(uri); 
 
-                    /// Перебор всех элементов row. Создание экземпляров событий.
+                    // Получение элемента rows, который содержит элементы событий (row).
+                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+
+                    // Перебор всех элементов row. Создание экземпляров событий.
                     for (int i = 0; i < rows.ChildNodes.Count; i++)
                     {
                         XmlNode row = rows.ChildNodes[i];
@@ -51,7 +58,11 @@ namespace MoexInfoMobile.Iss.Api
 
 
 
-        // Метод возвращает задачу с обобщенным типом "подробности события".
+        /// <summary>
+        /// Инициализирует получение информации о событии.
+        /// </summary>
+        /// <param name="id">Идентификатор события.</param>
+        /// <returns>Задача с информацией о событии.</returns>
         public static async Task<EventInfo> GetEventInfo(ulong id)
         {
             EventInfo eventInfo = null;
@@ -61,12 +72,15 @@ namespace MoexInfoMobile.Iss.Api
                 try
                 {
                     string path = $"https://iss.moex.com/iss/events/{ id }.xml";
-                    Uri uri = new Uri(path); /// Путь http-запроса.
 
-                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+                    // Путь http-запроса.
+                    var uri = new Uri(path);
 
-                    /// Получение элемента rows, который содержит подробности события (row).
-                    XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    // Получение xml-документа.
+                    var document = ReqRes.GetDocumentByUri(uri); 
+
+                    // Получение элемента rows, который содержит подробности события (row).
+                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
 
                     eventInfo = new EventInfo(rows.FirstChild);
                 }

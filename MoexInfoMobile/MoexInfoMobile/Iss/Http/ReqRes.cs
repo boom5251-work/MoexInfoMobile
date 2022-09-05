@@ -9,21 +9,21 @@ namespace MoexInfoMobile.Iss.Http
     {
         public static XmlDocument GetDocumentByUri(Uri uri)
         {
-            HttpWebRequest request = WebRequest.CreateHttp(uri); /// Http-запрос.
-            HttpWebResponse response = request.GetResponse() as HttpWebResponse; /// Http-ответ.
+            var request = WebRequest.CreateHttp(uri); /// Http-запрос.
+            var response = request.GetResponse() as HttpWebResponse; /// Http-ответ.
             string responseString; /// Xml-строка ответа.
 
             /// Получение потока http-ответа.
-            using (Stream responseStream = response.GetResponseStream())
+            using (var responseStream = response.GetResponseStream())
             {
                 /// Чтение потока http-ответа.
-                using (StreamReader streamReader = new StreamReader(responseStream))
+                using (var streamReader = new StreamReader(responseStream))
                 {
                     responseString = streamReader.ReadToEnd(); /// Запись потока http-ответа в строку.
                 }
             }
 
-            XmlDocument document = new XmlDocument(); /// Новый документ.
+            var document = new XmlDocument(); /// Новый документ.
             document.LoadXml(responseString); /// Загрузка документа из строки ответа.
 
             return document;

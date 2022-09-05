@@ -34,14 +34,14 @@
     <Compile Update="Custom\InfoCellView.xaml.cs">
       <DependentUpon>InfoCellView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Custom\HtmlTableView.xaml.cs">
+    <Compile Update="Custom\Html\HtmlTableView.xaml.cs">
       <DependentUpon>HtmlTableView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Custom\HtmlTableCell.xaml.cs">
+    <Compile Update="Custom\Html\HtmlTableCell.xaml.cs">
       <DependentUpon>HtmlTableCell.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Custom\LinkLabel.xaml.cs">
-      <DependentUpon>LinkLabel</DependentUpon>
+    <Compile Update="Custom\Html\HtmlLinkLabel.xaml.cs">
+      <DependentUpon>HtmlLinkLabel.xaml</DependentUpon>
     </Compile>
     <Compile Update="Pages\InfoPage.xaml.cs">
       <DependentUpon>InfoPage.xaml</DependentUpon>
@@ -49,16 +49,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Custom\HtmlListView.xaml">
+    <EmbeddedResource Update="Custom\Html\HtmlListView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Custom\InfoCellView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Custom\HtmlTableView.xaml">
+    <EmbeddedResource Update="Custom\Html\HtmlTableView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Custom\HtmlTableCell.xaml">
+    <EmbeddedResource Update="Custom\Html\HtmlTableCell.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Custom\SecurityCellView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Pages\InfoPage.xaml">

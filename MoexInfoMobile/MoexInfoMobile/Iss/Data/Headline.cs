@@ -27,8 +27,13 @@ namespace MoexInfoMobile.Iss.Data
 
 
 
-        public ulong Id { get; } /// Идентификатор записи.
-        public string Title { get; } /// Заголовок.
-        public DateTime PublishedAt { get; } /// Дата публикации.
+        /// <summary>Идентификатор записи.</summary>
+        public ulong Id { get; }
+
+        /// <summary>Заголовок.</summary>
+        public string Title { get; } = string.Empty;
+
+        /// <summary>Дата публикации.</summary>
+        public DateTime PublishedAt { get; }
     }
 }

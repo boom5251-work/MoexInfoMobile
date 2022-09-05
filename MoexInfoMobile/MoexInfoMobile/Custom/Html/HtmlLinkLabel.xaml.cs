@@ -3,22 +3,29 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MoexInfoMobile.Custom
+namespace MoexInfoMobile.Custom.Html
 {
+    /// <summary>
+    /// Элемент управления, представляющий текст-ссылку.
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LinkLabel : Label
+    public partial class HtmlLinkLabel : Label
     {
-        public LinkLabel()
+        public HtmlLinkLabel()
         {
             InitializeComponent();
             tapGestureRecognizer.Command = new Command(OnTap);
         }
 
 
-        public Uri Uri { get; set; } // Путь.
+
+        /// <summary>Путь.</summary>
+        public Uri Uri { get; set; }
 
 
-        // Метод открывет браузер при нажатии на элемент.
+        /// <summary>
+        /// Открывет браузер при нажатии на элемент.
+        /// </summary>
         private async void OnTap()
         {
             try

@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 
 namespace MoexInfoMobile.Iss.Data
 {
@@ -8,68 +9,62 @@ namespace MoexInfoMobile.Iss.Data
         {
             ShortName = shortName;
             SecId = secId;
-            PercentPriceChange = 0; /// По умолчанию 0%.
         }
 
 
 
-        public string ShortName { get; } /// Короткое название ценной бумаги.
-        public string SecId { get; } /// Идентификатор ценной бумаги (строковый).
-        public string SecurityGroup { get; private set; } /// Группа ценной бумаги.
+        /// <summary>Короткое название ценной бумаги.</summary>
+        public string ShortName { get; } = string.Empty;
 
-        public bool IsTraded { get; private set; } /// Булево значение: торгуется ли бумага.
-        
-        public double PercentPriceChange { get; set; } /// Изменение цены в процентах.
+        /// <summary>Идентификатор ценной бумаги (строковый).</summary>
+        public string SecId { get; } = string.Empty;
+
+        /// <summary>ISIN-код.</summary>
+        public string IsinCode { get; private set; } = string.Empty;
+
+        /// <summary>Тип ценной бумаги.</summary>
+        public string SecurityGroup { get; private set; } = string.Empty;
+
+        /// <summary>Булево значение: торгуется ли бумага.</summary>
+        public bool IsTraded { get; private set; }
 
 
 
-        // Метод проверяет, возможно ли создать экземпляр данного класса на основе XmlNode.
-        public static bool CanExtractFromNode(XmlNode row, out Security security)
+        ///<summary>
+        /// Метод проверяет, возможно ли создать экземпляр данного класса на основе XmlNode.
+        /// </summary> 
+        /// <param name="row">Объект ценной бумаги.</param>
+        /// <param name="security">Ценная бумага.</param>
+        /// <returns>True, если удалось получить данные. Fasle - нет.</returns>
+        public static bool CanExtractFromNode(XmlNode row,  out Security security)
         {
-            security = null;
-
             try
             {
-                string groupStr = row.Attributes["group"].Value; /// Значение атрибута "группа (тип) ценных бумаг".
+                // Значение атрибута "группа (тип) ценных бумаг".
+                string groupStr = row.Attributes["group"].Value;
 
-                /// Если тип ценной бумаги соответсвует необходимым, то row разбирается.
-                if (groupStr == "futures_forts" || groupStr == "stock_bonds" || groupStr == "stock_shares")
+                // Получение короткого названия ценной бумаги.
+                string shortName = row.Attributes["shortname"].Value;
+                // Получение идентификатора ценной бумаги (строкового).
+                string secId = row.Attributes["secid"].Value.ToUpper(); 
+
+                // Извлечение булева значения: тооргуется ли бумага.
+                int isTradedNum = int.Parse(row.Attributes["is_traded"].Value);
+                bool isTraded = Convert.ToBoolean(isTradedNum);
+
+                // Создание экземпляра класса ценной бкмаги.
+                security = new Security(shortName, secId)
                 {
-                    string shortName = row.Attributes["shortname"].Value; /// Получение короткого названия ценной бумаги.
-                    string secId = row.Attributes["secid"].Value.ToUpper(); /// Получение идентификатора ценной бумаги (строкового).
+                    IsTraded = isTraded,
+                    IsinCode = row.Attributes["isin"].Value,
+                    SecurityGroup = row.Attributes["group"].Value
+                };
 
-                    /// Извлечение булева значения: тооргуется ли бумага.
-                    string isTradedStr = row.Attributes["is_traded"].Value;
-                    bool isTraded;
-
-                    /// Если единица, то торгуется.
-                    if (isTradedStr == "1")
-                    {
-                        isTraded = true;
-                    }
-                    else
-                    {
-                        isTraded = false;
-                    }
-
-                    /// Извлечение группы ценной бумаги.
-                    string securityGroup = row.Attributes["group"].Value;
-
-                    /// Создание экземпляра класса ценной бкмаги.
-                    security = new Security(shortName, secId)
-                    {
-                        IsTraded = isTraded,
-                        SecurityGroup = securityGroup
-                    };
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return true;
             }
             catch
             {
+                security = null;
                 return false;
             }
         }

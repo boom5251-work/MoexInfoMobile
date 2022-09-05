@@ -10,27 +10,31 @@ namespace MoexInfoMobile
             InitializeComponent();
 
             Os = os;
-
-            NavigationPage navigationPage = new NavigationPage(new MainPage());
-            MainPage = navigationPage;
+            MainPage = new NavigationPage(new MainPage());
         }
 
 
 
-        public static OperatingSystem Os { get; private set; } /// Интерфейс опреационных систем Android и IOS.
+        /// <summary>
+        /// Интерфейс опреационных систем Android и IOS.
+        /// </summary>
+        public static OperatingSystem Os { get; private set; }
 
 
 
         protected override void OnStart()
         {
+            return;
         }
 
         protected override void OnSleep()
         {
+            return;
         }
 
         protected override void OnResume()
         {
+            return;
         }
     }
 }

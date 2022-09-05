@@ -1,25 +1,30 @@
 ﻿using Xamarin.Forms;
 
-namespace MoexInfoMobile.Custom
+namespace MoexInfoMobile.Custom.Html
 {
+    /// <summary>
+    /// Элемент управления, представляющий нумерованный список.
+    /// </summary>
     public sealed class HtmlNumberedListView : HtmlListView
     {
-        public char MarkerCharacter { get; set; } // Сивол, стоящий после номера элемента.
+        /// <summary>Символ, стоящий после номера элемента.</summary>
+        public char MarkerCharacter { get; set; }
 
 
-        // Метод инициализирует список.
+
         public override void InitializeList(string[] values)
         {
             for (int i = 0; i < values.Length; i++)
             {
-                Label marker = CreateMarker() as Label;
+                var marker = CreateMarker() as Label;
                 marker.Text = $"{i}{MarkerCharacter}";
+
                 AddRow(marker, values[i]);
             }
         }
 
 
-        // Метод создает маркер.
+        
         protected override View CreateMarker()
         {
             Label marker = CreateMarker() as Label;

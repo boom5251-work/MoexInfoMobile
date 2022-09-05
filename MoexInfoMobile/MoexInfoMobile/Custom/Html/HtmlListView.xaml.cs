@@ -1,8 +1,11 @@
 ﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MoexInfoMobile.Custom
+namespace MoexInfoMobile.Custom.Html
 {
+    /// <summary>
+    /// Контейнер элементов списка.
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public abstract partial class HtmlListView : ContentView
     {
@@ -13,49 +16,63 @@ namespace MoexInfoMobile.Custom
 
 
 
-        // Стиль текста списка.
+        /// <summary>Стиль текста списка.</summary>
         public Style TextStyle
         {
             get { return (Style)GetValue(TextStyleProperty); }
             set { SetValue(TextStyleProperty, value); }
         }
 
+        /// <summary>Привязка: стиль текста списка.</summary>
         public static readonly BindableProperty TextStyleProperty =
             BindableProperty.Create(nameof(TextStyle), typeof(Style), typeof(HtmlListView), null);
 
 
-        // Стиль маркера списка.
+
+        /// <summary>Стиль маркера списка.</summary>
         public Style MarkerStyle
         {
             get { return (Style)GetValue(MarkerStyleProperty); }
             set { SetValue(MarkerStyleProperty, value); }
         }
 
+        /// <summary>Привязка: стиль маркера списка.</summary>
         public static readonly BindableProperty MarkerStyleProperty =
             BindableProperty.Create(nameof(MarkerStyle), typeof(Style), typeof(HtmlListView), null);
 
 
 
-        // Метод инициализирует список.
+        /// <summary>
+        /// Инициализирует список, на основе массива строк списка.
+        /// </summary>
+        /// <param name="values">Строки списка.</param>
         public abstract void InitializeList(string[] values);
 
-        // Метод создает маркер.
+
+        /// <summary>
+        /// Создает маркер списка.
+        /// </summary>
+        /// <returns>Маркер списка.</returns>
         protected abstract View CreateMarker();
 
 
-        // Метод добавляет новых элемент в список.
+        /// <summary>
+        /// Добавляет новый элемент в список.
+        /// </summary>
+        /// <param name="marker">Маркер.</param>
+        /// <param name="text">Текст.</param>
         protected void AddRow(View marker, string text)
         {
-            /// Контейнер элемента.
-            Grid rowContainer = new Grid();
+            // Контейнер элемента.
+            var rowContainer = new Grid();
             rowContainer.Style = rowContainerStyle;
 
-            /// Добавление маркара в контейнер.
+            // Добавление маркара в контейнер.
             Grid.SetColumn(marker, 0);
             rowContainer.Children.Add(marker);
 
-            /// Текст элемента списка.
-            Label label = new Label
+            // Текст элемента списка.
+            var label = new Label
             {
                 Text = text,
                 BindingContext = this
@@ -63,7 +80,7 @@ namespace MoexInfoMobile.Custom
 
             label.SetBinding(StyleProperty, nameof(TextStyle));
 
-            /// Добавление текста в контейнер.
+            // Добавление текста в контейнер.
             Grid.SetColumn(label, 1);
             rowContainer.Children.Add(label);
             _list.Children.Add(rowContainer);

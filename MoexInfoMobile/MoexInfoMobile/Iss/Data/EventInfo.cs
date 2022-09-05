@@ -9,7 +9,6 @@ namespace MoexInfoMobile.Iss.Data
         public EventInfo(XmlNode row) : base(row)
         {
             string format = "yyyy-MM-dd hh:mm:ss";
-            string from = row.Attributes["from"].Value;
             string till = row.Attributes["till"].Value;
 
             Till = DateTime.ParseExact(till, format, CultureInfo.InvariantCulture);
@@ -21,11 +20,16 @@ namespace MoexInfoMobile.Iss.Data
         }
 
 
+        /// <summary>Дата и время окончания события.</summary>
+        public DateTime Till { get; private set; }
 
-        public DateTime Till { get; private set; } /// Дата и время окончания события.
-        public string Orginizer { get; private set; } /// Организатор события.
-        public string Place { get; private set; } /// Место проведения события.
+        /// <summary>Организатор события.</summary>
+        public string Orginizer { get; private set; } = string.Empty;
 
-        public string HtmlBody { get; private set; } /// Информация о событии в формате html-кода.
+        /// <summary>Место проведения события.</summary>
+        public string Place { get; private set; } = string.Empty;
+
+        /// <summary>Информация о событии в формате html-кода.</summary>
+        public string HtmlBody { get; private set; } = string.Empty;
     }
 }

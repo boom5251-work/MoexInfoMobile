@@ -18,7 +18,8 @@ namespace MoexInfoMobile.Iss.Data
                 string issueDate = GetValueWithName(rows, "ISSUEDATE");
                 IssueDate = DateTime.ParseExact(issueDate, "yyyy-mm-dd", CultureInfo.InvariantCulture);
 
-                string path = $"http://invest-brands.cdn-tinkoff.ru/{ Isin }x160.png"; /// Ресурс с тинькофф-инвестиций (160x160).
+                // Ресурс с тинькофф-инвестиций (160x160).
+                string path = $"http://invest-brands.cdn-tinkoff.ru/{ Isin }x160.png";
                 BrandLogoUri = new Uri(path);
             }
             catch { }
@@ -26,9 +27,16 @@ namespace MoexInfoMobile.Iss.Data
 
 
 
-        public string Isin { get; } /// Исин-код
-        public ulong IssueSize { get; } /// Объем выпуска.
-        public DateTime IssueDate { get; } /// Дата выпуска.
-        public Uri BrandLogoUri { get; } /// Путь к интернет-ресурсу с логотипом.
+        /// <summary>Исин-код.</summary>
+        public string Isin { get; }
+
+        /// <summary>Объем выпуска.</summary>
+        public ulong IssueSize { get; }
+
+        /// <summary>Дата выпуска.</summary>
+        public DateTime IssueDate { get; }
+
+        /// <summary>Путь к интернет-ресурсу с логотипом.</summary>
+        public Uri BrandLogoUri { get; }
     }
 }

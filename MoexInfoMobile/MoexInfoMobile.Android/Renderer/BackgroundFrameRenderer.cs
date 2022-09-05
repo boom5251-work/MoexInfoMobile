@@ -30,13 +30,16 @@ namespace MoexInfoMobile.Droid.Renderer
         // Установка ресурса-листа слоев отрисовки.
         private void SetBackgroundResource()
         {
-            BackgroundResource resource = (Element as BackgroundFrame).BackgroundResource;
-
-            switch (resource)
+            if (Element is BackgroundFrame)
             {
-                case BackgroundResource.BackgroundFrameClassicChalk:
-                    SetBackgroundResource(Resource.Drawable.background_frame_white);
-                    break;
+                BackgroundResource resource = (Element as BackgroundFrame).BackgroundResource;
+
+                switch (resource)
+                {
+                    case BackgroundResource.BackgroundFrameClassicChalk:
+                        SetBackgroundResource(Resource.Drawable.background_frame_white);
+                        break;
+                }
             }
         }
     }

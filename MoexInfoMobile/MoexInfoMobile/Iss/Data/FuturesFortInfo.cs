@@ -24,8 +24,13 @@ namespace MoexInfoMobile.Iss.Data
 
 
 
-        public DateTime LastTrade { get; } /// Последний торговый день.
-        public DateTime LastDelDate { get; } /// День исполнения.
-        public string AssetCode { get; } /// Код базового актива.
+        /// <summary>Последний торговый день.</summary>
+        public DateTime LastTrade { get; }
+
+        /// <summary>День исполнения.</summary>
+        public DateTime LastDelDate { get; }
+
+        /// <summary>Код базового актива.</summary>
+        public string AssetCode { get; } = string.Empty;
     }
 }

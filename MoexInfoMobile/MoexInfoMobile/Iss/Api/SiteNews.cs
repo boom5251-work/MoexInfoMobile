@@ -9,7 +9,11 @@ namespace MoexInfoMobile.Iss.Api
 {
     public static class SiteNews
     {
-        // Метод возвращает задачу с обобщенным типом "список новостных заголовков".
+        /// <summary>
+        /// Инициализирует получение списка новостных заголовков.
+        /// </summary>
+        /// <param name="start">Начиная с.</param>
+        /// <returns>Задача со списком новостных заголовков.</returns>
         public static async Task<List<Headline>> GetHeadlines(uint start)
         {
             List<Headline> headlines = new List<Headline>();
@@ -19,19 +23,22 @@ namespace MoexInfoMobile.Iss.Api
                 try
                 {
                     string path = $"https://iss.moex.com/iss/sitenews.xml?start={ start }";
-                    Uri uri = new Uri(path); /// Путь http-запроса.
 
-                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+                    // Путь http-запроса.
+                    var uri = new Uri(path);
 
-                    /// Получение элемента rows, который содержит элементы новостных заголовков (row).
-                    XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    // Получение xml-документа.
+                    var document = ReqRes.GetDocumentByUri(uri);
 
-                    /// Перебор всех элементов row. Создание экземпляров новостных заголовков.
+                    // Получение элемента rows, который содержит элементы новостных заголовков (row).
+                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+
+                    // Перебор всех элементов row. Создание экземпляров новостных заголовков.
                     for (int i = 0; i < rows.ChildNodes.Count; i++)
                     {
-                        XmlNode row = rows.ChildNodes[i];
+                        var row = rows.ChildNodes[i];
 
-                        Headline headline = new Headline(row);
+                        var headline = new Headline(row);
                         headlines.Add(headline);
                     }
                 }
@@ -50,7 +57,11 @@ namespace MoexInfoMobile.Iss.Api
 
 
         
-        // Метод возвращает задачу с обобщенным типом "новость сайта".
+        /// <summary>
+        /// Инициализирует получение иноформацию о новости.
+        /// </summary>
+        /// <param name="id">Идентификатор новости.</param>
+        /// <returns>Задача с информацией о новости.</returns>
         public static async Task<HeadlineInfo> GetNewsInfo(ulong id)
         {
             HeadlineInfo newsInfo = null;
@@ -60,12 +71,15 @@ namespace MoexInfoMobile.Iss.Api
                 try
                 {
                     string path = $"https://iss.moex.com/iss/sitenews/{ id }.xml";
-                    Uri uri = new Uri(path); /// Путь http-запроса.
 
-                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+                    // Путь http-запроса.
+                    var uri = new Uri(path);
 
-                    /// Получение элемента rows, который содержит элемент-новость (row).
-                    XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    // Получение xml-документа.
+                    var document = ReqRes.GetDocumentByUri(uri);
+
+                    // Получение элемента rows, который содержит элемент-новость (row).
+                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
 
                     newsInfo = new HeadlineInfo(rows.FirstChild);
                 }

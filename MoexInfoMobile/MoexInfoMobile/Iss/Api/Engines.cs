@@ -7,9 +7,19 @@ using System.Xml;
 
 namespace MoexInfoMobile.Iss.Api
 {
+    /// <summary>
+    /// Движки ИСС.
+    /// </summary>
     public static class Engines
     {
-        // Метод возвращает задачу с обобщенным типом "список свечей".
+        /// <summary>
+        /// Инициализирует получение свечей.
+        /// </summary>
+        /// <param name="args">Аргументы запроса.</param>
+        /// <param name="from">Начиная с.</param>
+        /// <param name="till">Заканяивая до.</param>
+        /// <param name="interval">Интервал.</param>
+        /// <returns>Задача со списком свечей.</returns>
         public static async Task<List<Candle>> GetCandles(Tuple<string, string, string> args, string from, string till, byte interval)
         {
             List<Candle> candles = new List<Candle>();
@@ -22,20 +32,23 @@ namespace MoexInfoMobile.Iss.Api
                     string market = args.Item2;
                     string secId = args.Item3;
 
-                    string path = $"https://iss.moex.com/iss/engines/{ engine }/markets/{ market }/securities/{ secId }/candles.xml?from={ from }&till={ till }&interval={ interval }";
-                    Uri uri = new Uri(path); /// Путь http-запроса.
+                    string path = $"https://iss.moex.com/iss/engines/" + 
+                        $"{engine}/markets/{market}/securities/{secId}" +
+                        $"/candles.xml?from={from}&till={till}&interval={interval}";
 
-                    XmlDocument document = ReqRes.GetDocumentByUri(uri); /// Получение xml-документа.
+                    var uri = new Uri(path); // Путь http-запроса.
 
-                    /// Получение элемента rows, который содержит список свечей (row).
-                    XmlElement rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    var document = ReqRes.GetDocumentByUri(uri); // Получение xml-документа.
 
-                    /// Перебор всех элементов row. Создание экземпляров свечей.
+                    // Получение элемента rows, который содержит список свечей (row).
+                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+
+                    // Перебор всех элементов row. Создание экземпляров свечей.
                     for (int i = 0; i < rows.ChildNodes.Count; i++)
                     {
-                        XmlNode row = rows.ChildNodes[i];
+                        var row = rows.ChildNodes[i];
 
-                        /// Если данные свечи, то она добавляется в список.
+                        // Если данные свечи, то она добавляется в список.
                         if (Candle.CanExtractFromNode(row, out Candle candle))
                         {
                             candles.Add(candle);

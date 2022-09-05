@@ -1,8 +1,12 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MoexInfoMobile.Custom
+namespace MoexInfoMobile.Custom.Html
 {
+    /// <summary>
+    /// Элемент управления, представляющий таблицу.
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HtmlTableView : ContentView
     {
@@ -13,13 +17,17 @@ namespace MoexInfoMobile.Custom
 
 
 
+        /// <summary>Количество строк таблицы.</summary>
         public int RowsCount { get; private set; }
+
+        /// <summary>Количество колонок таблицы.</summary>
         public int ColumnsCount { get; private set; }
 
+        /// <summary>Содержимое ячеек таблицы.</summary>
         public View[,] CellsContent { get; private set; }
 
 
-        // Стиль ячеек таблицы.
+        /// <summary>Стиль ячеек таблицы.</summary>
         public Style CellStyle
         {
             get { return (Style)GetValue(CellStyleProperty); }
@@ -30,7 +38,7 @@ namespace MoexInfoMobile.Custom
             BindableProperty.Create(nameof(CellStyle), typeof(Style), typeof(HtmlTableView), null);
 
 
-        // Стиль пустых ячеек таблицы.
+        /// <summary>Стиль пустых ячеек таблицы.</summary>
         public Style EmptyCellStyle
         {
             get { return (Style)GetValue(EmptyCellStyleProperty); }
@@ -41,7 +49,7 @@ namespace MoexInfoMobile.Custom
             BindableProperty.Create(nameof(EmptyCellStyle), typeof(Style), typeof(HtmlTableView), null);
 
 
-        // Стиль текстовых элементов в ячейках таблицы.
+        /// <summary>Стиль текстовых элементов в ячейках таблицы.</summary>
         public Style TextStyle
         {
             get { return (Style)GetValue(TextStyleProperty); }
@@ -52,34 +60,53 @@ namespace MoexInfoMobile.Custom
             BindableProperty.Create(nameof(TextStyle), typeof(Style), typeof(HtmlTableView), null);
 
 
+        /// <summary>Стиль заголовков в ячейках таблицы.</summary>
+        public Style TextStyleBold
+        {
+            get { return (Style)GetValue(TextStyleBoldProperty); }
+            set { SetValue(TextStyleBoldProperty, value); }
+        }
 
-        // Метод инициализирует таблицу.
+        public static readonly BindableProperty TextStyleBoldProperty =
+            BindableProperty.Create(nameof(TextStyleBold), typeof(Style), typeof(HtmlTableView), null);
+
+
+
+
+        /// <summary>
+        /// Метод инициализирует таблицу.
+        /// </summary>
+        /// <param name="cellsContent">Содержимое ячеек таблицы.</param>
         public void InitializeTable(View[,] cellsContent)
         {
             CellsContent = cellsContent;
             RowsCount = CellsContent.GetLength(0);
             ColumnsCount = CellsContent.GetLength(1);
 
-            /// Если в таблица содержит не более трех столбцов, то она отображается.
+            // Если в таблица содержит не более трех столбцов, то она отображается.
             if (ColumnsCount <= 3)
             {
-                CreateDefaultStyle(); /// Отображение таблицы.
+                // Отображение таблицы.
+                CreateDefaultStyle();
             }
             else
             {
-                CreateDownloadBlock(); /// Отображение блока загрузки.
+                // Отображение блока загрузки.
+                CreateDownloadBlock();
             }
         }
 
 
 
-        // Метод создает таблицу.
+        /// <summary>
+        /// Метод создает таблицу.
+        /// </summary>
         private void CreateDefaultStyle()
         {
-            /// Перебор содержимого ячеек.
+            // Перебор содержимого ячеек.
             for (int i = 0; i < RowsCount; i++)
             {
-                /// Создание строки с колонками.
+                // Создание строки с колонками.
                 Grid tableRow = new Grid
                 {
                     ColumnDefinitions = GetColumnDefinitions(),
@@ -89,44 +116,60 @@ namespace MoexInfoMobile.Custom
                 for (int j = 0; j < ColumnsCount; j++)
                 {
                     HtmlTableCell cell = new HtmlTableCell();
-                    /// Создание ячеек.
+
+                    // Создание ячеек.
                     if (CellsContent[i, j] != null)
                     {
                         View view = CellsContent[i, j];
-                        /// Установка стилей элемента интерфейса.
+
+                        // Установка стилей элемента интерфейса.
                         SetStyle(view);
-                        /// Добавление элемента в ячейку.
+
+                        // Добавление элемента в ячейку.
                         cell.AddView(view);
                     }
 
-                    SetStyle(cell); /// Установка стилей.
-                    Grid.SetColumn(cell, j); /// Установка колонки.
-                    tableRow.Children.Add(cell); /// Добавление ячейки в троку.
+                    SetStyle(cell); // Установка стилей.
+                    Grid.SetColumn(cell, j); // Установка колонки.
+                    tableRow.Children.Add(cell); // Добавление ячейки в троку.
                 }
 
-                /// Добавление строки в таблицу.
+                // Добавление строки в таблицу.
                 _table.Children.Add(tableRow);
             }
         }
 
 
 
-        // 
+        /// <summary>
+        /// 
+        /// </summary>
         private void CreateDownloadBlock()
         {
             // TODO: Добавить логику отображения.
+            throw new NotImplementedException();
         }
 
 
 
-        // Метод устанавливает связи для стилей элементов.
+        /// <summary>
+        /// Метод устанавливает связи для стилей элементов.
+        /// </summary>
+        /// <param name="view">Элмент представления.</param>
         private void SetStyle(View view)
         {
             view.BindingContext = this;
 
             if (view is Label)
             {
-                view.SetBinding(StyleProperty, nameof(TextStyle));
+                if ((view as Label).FontAttributes == FontAttributes.Bold)
+                {
+                    view.SetBinding(StyleProperty, nameof(TextStyleBold));
+                }
+                else
+                {
+                    view.SetBinding(StyleProperty, nameof(TextStyle));
+                }
             }
             else if (view is HtmlTableCell)
             {
@@ -143,7 +186,10 @@ namespace MoexInfoMobile.Custom
 
 
 
-        // Метод создает разделение на колонки.
+        /// <summary>
+        /// Метод создает разделение на колонки.
+        /// </summary>
+        /// <returns>Коллекция разделений.</returns>
         private ColumnDefinitionCollection GetColumnDefinitions()
         {
             ColumnDefinitionCollection columnDefinitions = new ColumnDefinitionCollection();

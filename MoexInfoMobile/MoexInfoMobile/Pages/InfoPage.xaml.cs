@@ -12,6 +12,9 @@ using Xamarin.Forms.Xaml;
 
 namespace MoexInfoMobile.Pages
 {
+    /// <summary>
+    /// Информационная страницы для новостей и событий.
+    /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CellInfoPage : ContentPage
     {
@@ -31,29 +34,32 @@ namespace MoexInfoMobile.Pages
 
 
 
-        // Метод загружает подробную информацию о новсти.
+        /// <summary>
+        /// Загружает подробную информацию о новсти.
+        /// </summary>
+        /// <param name="headlineId">Идентификатор новости.</param>
         private void GetHeadlineInfo(ulong headlineId)
         {
-            /// Получение информации о новсти.
+            // Получение информации о новсти.
             Task<HeadlineInfo> headlineInfoTask = SiteNews.GetNewsInfo(headlineId);
 
-            /// Обработка окончания выполнения загрузки информации о новости.
+            // Обработка окончания выполнения загрузки информации о новости.
             headlineInfoTask.ContinueWith((Task<HeadlineInfo> task) =>
             {
                 HeadlineInfo headlineInfo = task.Result;
 
-                /// Преобразование даты побликации.
+                // Преобразование даты побликации.
                 string format = "dd.MM.yyyy HH:mm";
                 string publishedAt = headlineInfo.PublishedAt.ToString(format, CultureInfo.InvariantCulture);
 
-                /// Создание элементов интерфейса.
+                // Создание элементов интерфейса.
                 HtmlDecoder htmlDecoder = new HtmlDecoder(htmlStyles);
                 
-                if (HtmlDecoder.IsHtmlText(headlineInfo.Body))
+                if (HtmlDecoder.IsHtmlText(headlineInfo.HtmlBody))
                 {
                     try
                     {
-                        List<View> views = htmlDecoder.DecodeHtml(headlineInfo.Body);
+                        List<View> views = htmlDecoder.DecodeHtml(headlineInfo.HtmlBody);
                         ShowInfo(headlineInfo.Title, publishedAt, views.ToArray());
                     }
                     catch (XmlException ex)
@@ -70,7 +76,7 @@ namespace MoexInfoMobile.Pages
                 {
                     Label label = new Label
                     {
-                        Text = headlineInfo.Body,
+                        Text = headlineInfo.HtmlBody,
                         Style = labelStyle
                     };
 
@@ -81,7 +87,10 @@ namespace MoexInfoMobile.Pages
 
 
 
-        // Метод загружает подробную информацию о событии.
+        /// <summary>
+        /// Загружает подробную информацию о событии.
+        /// </summary>
+        /// <param name="eventInfoId">Идентификатор события.</param>
         private void GetEventInfo(ulong eventInfoId)
         {
             // TODO: Добавить логику выполнения.
@@ -90,10 +99,15 @@ namespace MoexInfoMobile.Pages
 
 
 
-        // Метод отображает информацию на странице.
+        /// <summary>
+        /// Отображает информацию на странице.
+        /// </summary>
+        /// <param name="title">Заголовок.</param>
+        /// <param name="publishedAt">Дата и время публикации.</param>
+        /// <param name="body">Элементы представления.</param>
         private void ShowInfo(string title, string publishedAt, params View[] body)
         {
-            /// Установка даты публикации, заголовка и тела.
+            // Установка даты публикации, заголовка и тела.
             Dispatcher.BeginInvokeOnMainThread(() =>
             {
                 loadingIndicator.IsVisible = false;
@@ -111,7 +125,11 @@ namespace MoexInfoMobile.Pages
 
 
 
-        // Обработка события нажатия на стрелку назад.
+        /// <summary>
+        /// Обрабатывает событие нажатия на стрелку назад.
+        /// </summary>
+        /// <param name="sender">Объект, вызвавший событие.</param>
+        /// <param name="e">Агрументы события</param>
         private async void BackImageButton_Clicked(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();

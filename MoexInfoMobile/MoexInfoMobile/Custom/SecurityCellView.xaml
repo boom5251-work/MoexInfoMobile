@@ -1,7 +1,7 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MoexInfoMobile.Custom.InfoCellView">
+             x:Class="MoexInfoMobile.Custom.SecurityCellView">
 
     <ContentView.Resources>
         <ResourceDictionary>
@@ -13,31 +13,36 @@
             </Style>
 
             <Style TargetType="Grid" x:Key="Container">
-                <Setter Property="Margin" Value="0" />
                 <Setter Property="RowDefinitions">
                     <Setter.Value>
                         <RowDefinitionCollection>
                             <RowDefinition Height="*" />
-                            <RowDefinition Height="20" />
+                            <RowDefinition Height="*" />
                         </RowDefinitionCollection>
                     </Setter.Value>
                 </Setter>
             </Style>
 
-            
+            <Style TargetType="Image" x:Key="SecurityIcon">
+                <Setter Property="Grid.Column" Value="0" />
+                <Setter Property="Grid.Row" Value="0" />
+                <Setter Property="Grid.RowSpan" Value="2" />
+                <Setter Property="Margin" Value="10" />
+            </Style>
+
             <Style TargetType="Label" x:Key="TextTemplate">
+                <Setter Property="FontSize" Value="14" />
                 <Setter Property="FontFamily" Value="IntroRegular" />
             </Style>
 
-            <Style TargetType="Label" x:Key="TitleLabel" BasedOn="{StaticResource TextTemplate}">
+            <Style TargetType="Label" x:Key="ShortNameLabel" BasedOn="{StaticResource TextTemplate}">
+                <Setter Property="Grid.Row" Value="0" />
                 <Setter Property="TextColor" Value="{StaticResource MidnightBadger}" />
-                <Setter Property="FontSize" Value="16" />
             </Style>
 
-            <Style TargetType="Label" x:Key="DateLabel" BasedOn="{StaticResource TextTemplate}">
+            <Style TargetType="Label" x:Key="SecIdLabel" BasedOn="{StaticResource TextTemplate}">
                 <Setter Property="Grid.Row" Value="1" />
                 <Setter Property="TextColor" Value="{StaticResource WolfGrey}" />
-                <Setter Property="FontSize" Value="14" />
             </Style>
         </ResourceDictionary>
     </ContentView.Resources>
@@ -47,10 +52,10 @@
             <Frame.GestureRecognizers>
                 <TapGestureRecognizer x:Name="tapGestureRecognizer" />
             </Frame.GestureRecognizers>
-            
+
             <Grid Style="{StaticResource Container}">
-                <Label x:Name="titleLabel" Style="{StaticResource TitleLabel}" />
-                <Label x:Name="dateLabel" Style="{StaticResource DateLabel}" />
+                <Label x:Name="shortNameLabel" Style="{StaticResource ShortNameLabel}" />
+                <Label x:Name="secIdLabel" Style="{StaticResource SecIdLabel}" />
             </Grid>
         </Frame>
     </ContentView.Content>
