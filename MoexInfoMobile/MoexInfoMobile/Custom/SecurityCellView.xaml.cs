@@ -6,7 +6,8 @@ using Xamarin.Forms.Xaml;
 namespace MoexInfoMobile.Custom
 {
     /// <summary>
-    /// Ячейка-кнопка ценной бумаги.
+    /// Ячейка-кнопка ценной бумаги.<br />
+    /// Логика взаимодействия с SecurityCellView.xaml
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SecurityCellView : ContentView, ICellView
@@ -19,21 +20,24 @@ namespace MoexInfoMobile.Custom
             shortNameLabel.Text = security.ShortName;
             secIdLabel.Text = security.SecId;
 
-            SecId = security.SecId;
+            SecId = security.SecId ?? string.Empty;
 
             // Обработка события нажатия на Frame.
             tapGestureRecognizer.Tapped += (object sender, EventArgs e) =>
-            {
-                Tapped.Invoke(this);
-            };
+                Tapped?.Invoke(this);
         }
 
 
-        /// <summary>Строковый идентификатор ценной бумаги.</summary>
+
+        /// <summary>
+        /// Строковый идентификатор ценной бумаги.
+        /// </summary>
         public string SecId { get; private set; }
 
 
-        /// <summary>Событие нажатия на элемент.</summary>
-        public event CellViewTapped Tapped;
+        /// <summary>
+        /// Событие нажатия на элемент.
+        /// </summary>
+        public event CellViewTapped? Tapped;
     }
 }

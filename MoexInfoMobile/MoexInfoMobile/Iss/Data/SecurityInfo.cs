@@ -1,7 +1,11 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 
 namespace MoexInfoMobile.Iss.Data
 {
+    /// <summary>
+    /// Информация ценной бумаги.
+    /// </summary>
     public abstract class SecurityInfo
     {
         protected SecurityInfo(XmlNode rows)
@@ -17,23 +21,35 @@ namespace MoexInfoMobile.Iss.Data
 
 
 
-        /// <summary>Идентификатор ценной бумаги (строковый).</summary>
-        public string SecId { get; } = string.Empty;
+        /// <summary>
+        /// Идентификатор ценной бумаги (строковый).
+        /// </summary>
+        public string SecId { get; }
 
-        /// <summary>Название ценной бумаги.</summary>
-        public string Name { get; } = string.Empty;
+        /// <summary>
+        /// Название ценной бумаги.
+        /// </summary>
+        public string Name { get; }
 
-        /// <summary>Короткое название ценной бумаги.</summary>
-        public string ShortName { get; } = string.Empty;
+        /// <summary>
+        /// Короткое название ценной бумаги.
+        /// </summary>
+        public string ShortName { get; }
 
-        /// <summary>Латинское название.</summary>
-        public string LatName { get; } = string.Empty;
+        /// <summary>
+        /// Латинское название.
+        /// </summary>
+        public string LatName { get; }
 
-        /// <summary>Вид ценной бумаги.</summary>
-        public string TypeName { get; } = string.Empty;
+        /// <summary>
+        /// Вид ценной бумаги.
+        /// </summary>
+        public string TypeName { get; }
 
-        /// <summary>Тип ценной бумаги.</summary>
-        public string GroupName { get; } = string.Empty;
+        /// <summary>
+        /// Тип ценной бумаги.
+        /// </summary>
+        public string GroupName { get; }
 
 
 
@@ -43,8 +59,8 @@ namespace MoexInfoMobile.Iss.Data
         /// </summary>
         /// <param name="rows">Объект ценной бумаги.</param>
         /// <param name="name">Название свойства.</param>
-        /// <returns></returns>
-        protected static string GetValueWithName(XmlNode rows, string name)
+        /// <returns>Получения значения дочернего элемента по названию.</returns>
+        protected string GetValueWithName(XmlNode rows, string name)
         {
             try
             {
@@ -53,17 +69,17 @@ namespace MoexInfoMobile.Iss.Data
                     var row = rows.ChildNodes[i];
 
                     if (row.Attributes["name"].Value == name)
-                    {
                         return row.Attributes["value"].Value;
-                    }
+                    else
+                        throw new InvalidOperationException();
                 }
+
+                throw new InvalidOperationException();
             }
             catch
             {
                 return string.Empty;
             }
-
-            return string.Empty;
         }
     }
 }

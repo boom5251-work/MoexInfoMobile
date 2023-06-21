@@ -5,10 +5,14 @@
     /// </summary>
     public enum SiteInfoType
     {
-        /// <summary>Информация новости.</summary>
+        /// <summary>
+        /// Информация новости.
+        /// </summary>
         HeadlineInfo,
 
-        /// <summary>Информация события.</summary>
+        /// <summary>
+        /// Информация события.
+        /// </summary>
         EventInfo
     }
 }

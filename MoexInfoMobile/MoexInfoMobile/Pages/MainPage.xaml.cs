@@ -10,13 +10,15 @@ using Xamarin.Forms;
 namespace MoexInfoMobile.Pages
 {
     /// <summary>
-    /// Главная страница.
+    /// Главная страница.<br />
+    /// Логика взаимодействия с MainPage.xaml
     /// </summary>
     public partial class MainPage : ContentPage
     {
         public MainPage()
         {
             InitializeComponent();
+
             Appearing += MainPage_Appearing;
 
             // Загрузка списка новостей.
@@ -24,76 +26,59 @@ namespace MoexInfoMobile.Pages
             // Загрузка списка событий.
             LoadEvents();
             // Загрузка списков всех типов ценных бумаг.
-            LoadDefaultSecurities();
+            //LoadAllSecurities();
         }
 
 
 
-        /// <summary>Количество загруженных новостей.</summary>
+        /// <summary>
+        /// Количество загруженных новостей.
+        /// </summary>
         private uint LoadedHeadlinesCount { get; set; }
 
-        /// <summary>Количество загруженных событий.</summary>
+        /// <summary>
+        /// Количество загруженных событий.
+        /// </summary>
         private uint LoadedEventsCount { get; set; }
 
-        /// <summary>Количество загруженных акций.</summary>
+        /// <summary>
+        /// Количество загруженных акций.
+        /// </summary>
         public uint LoadedStockBondsCount { get; private set; }
 
-        /// <summary>Количество загруженных облигаций.</summary>
+        /// <summary>
+        /// Количество загруженных облигаций.
+        /// </summary>
         public uint LoadedStockSharesCount { get; private set; }
 
-        /// <summary>Количество загруженных фьючерсов.</summary>
+        /// <summary>
+        /// Количество загруженных фьючерсов.
+        /// </summary>
         public uint LoadedFuturesFortsCount { get; private set; }
 
 
 
         /// <summary>
-        /// Инициализирует загрузку списка новостей.
+        /// Инициализирует загрузку списка новостных заголовков.
         /// </summary>
         private async void LoadNews()
         {
-            try
-            {
-                Task<List<Headline>> headlinesTask = SiteNews.GetHeadlines(LoadedHeadlinesCount);
+            var headlinesTask = SiteNews.GetHeadlines(LoadedHeadlinesCount);
 
-                // Обработка окончания выполнения загрузки списка новостей.
-                await headlinesTask.ContinueWith((Task<List<Headline>> task) =>
+            // Обработка окончания выполнения загрузки списка новостей.
+            await headlinesTask.ContinueWith((Task<List<Headline>> task) =>
+            {
+                var headlines = task.Result;
+
+                if (headlines.Count > 0)
                 {
-                    List<Headline> headlines = task.Result;
+                    // Увлеичение счетчика на 50.
+                    LoadedHeadlinesCount += 50;
 
-                    if (headlines.Count > 0)
-                    {
-                        // Увлеичение счетчика на 50.
-                        LoadedHeadlinesCount += 50;
-
-                        Dispatcher.BeginInvokeOnMainThread(() =>
-                        {
-                            // Выключения индикатора загрузки.
-                            newsLoadingIndicator.IsVisible = false;
-                        });
-
-                        foreach (Headline headline in headlines)
-                        {
-                            var headlineView = new InfoCellView(headline);
-
-                            // Добавление обработчика события "нажатие".
-                            headlineView.Tapped += HeadlineView_Tapped;
-
-                            Dispatcher.BeginInvokeOnMainThread(() =>
-                            {
-                                // Добавление стилей.
-                                headlineView.Style = infoCellViewStyle;
-                                headlinesContainer.Children.Add(headlineView);
-                            });
-                        }
-                    }
-                });
-            }
-            catch
-            {
-                // TODO: Обработать.
-            }
+                    ShowHeadlines(headlines);
+                }
+            });
         }
-
 
 
         /// <summary>
@@ -101,48 +86,74 @@ namespace MoexInfoMobile.Pages
         /// </summary>
         private async void LoadEvents()
         {
-            try
-            {
-                Task<List<Event>> eventsTask = Events.GetEvents(LoadedEventsCount);
+            var eventsTask = Events.GetEvents(LoadedEventsCount);
 
-                // Обработка окончания выполнения загрузки списка событий.
-                await eventsTask.ContinueWith((Task<List<Event>> task) =>
+            // Обработка окончания выполнения загрузки списка событий.
+            await eventsTask.ContinueWith((Task<List<Event>> task) =>
+            {
+                var events = task.Result;
+
+                if (events.Count > 0)
                 {
-                    List<Event> events = task.Result;
+                    // Увлеичение счетчика на 50.
+                    LoadedEventsCount += 50;
 
-                    if (events.Count > 0)
-                    {
-                        // Увлеичение счетчика на 50.
-                        LoadedEventsCount += 50;
+                    ShowEvents(events);
+                }
+            });
+        }
 
-                        Dispatcher.BeginInvokeOnMainThread(() =>
-                        {
-                            // Выключения индикатора загрузки.
-                            eventsLoadingIndicator.IsVisible = false;
-                        });
 
-                        foreach (Event siteEvent in events)
-                        {
-                            // Добавление новостных блоков в контейнер
-                            var eventView = new InfoCellView(siteEvent);
-
-                            // Добавление обработчика события "нажатие".
-                            eventView.Tapped += EventView_Tapped;
-
-                            Dispatcher.BeginInvokeOnMainThread(() =>
-                            {
-                                // Добавление стилей.
-                                eventView.Style = infoCellViewStyle;
-                                eventsContainer.Children.Add(eventView);
-                            });
-                        }
-                    }
-                });
-            }
-            catch
+        /// <summary>
+        /// Отображает список новостных заголовков.
+        /// </summary>
+        /// <param name="headlines">Список новостныйх заголовоков</param>
+        private void ShowHeadlines(List<Headline> headlines)
+        {
+            Dispatcher.BeginInvokeOnMainThread(() =>
             {
-                // TODO: Обработать.
-            }
+                // Выключения индикатора загрузки.
+                newsLoadingIndicator.IsVisible = false;
+
+                foreach (var headline in headlines)
+                {
+                    var headlineView = new InfoCellView(headline);
+
+                    // Добавление обработчика события "нажатие".
+                    headlineView.Tapped += HeadlineView_Tapped;
+
+                    // Добавление стилей.
+                    headlineView.Style = infoCellViewStyle;
+                    headlinesContainer.Children.Add(headlineView);
+                }
+            });
+        }
+
+
+        /// <summary>
+        /// Отображает список событий.
+        /// </summary>
+        /// <param name="events">Список событий.</param>
+        private void ShowEvents(List<Event> events)
+        {
+            Dispatcher.BeginInvokeOnMainThread(() =>
+            {
+                // Выключения индикатора загрузки.
+                eventsLoadingIndicator.IsVisible = false;
+
+                foreach (var siteEvent in events)
+                {
+                    // Добавление новостных блоков в контейнер
+                    var eventView = new InfoCellView(siteEvent);
+
+                    // Добавление обработчика события "нажатие".
+                    eventView.Tapped += EventView_Tapped;
+
+                    // Добавление стилей.
+                    eventView.Style = infoCellViewStyle;
+                    eventsContainer.Children.Add(eventView);
+                }
+            });
         }
 
 
@@ -150,36 +161,36 @@ namespace MoexInfoMobile.Pages
         /// <summary>
         /// Инициализирует загрузку всех списков ценных бумаг.
         /// </summary>
-        private async void LoadDefaultSecurities()
-        {
-            try
-            {
-                // Кнопка "акции" активна по умаолчанию.
-                stockBondsToggleButton.BackgroundColor = Colors.WolfGrey;
-                stockBondsToggleButton.TextColor = Colors.ClassicChalk;
+        //private async void LoadAllSecurities()
+        //{
+        //    try
+        //    {
+        //        // Кнопка "акции" активна по умаолчанию.
+        //        stockBondsToggleButton.BackgroundColor = Colors.WolfGrey;
+        //        stockBondsToggleButton.TextColor = Colors.ClassicChalk;
 
-                // Получение список всех типов ценных бумаг.
-                Task<List<Security>>[] securities = new Task<List<Security>>[]
-                {
-                    Securities.GetSecurities(LoadedStockBondsCount, Securities.StockBondsGroup),
-                    Securities.GetSecurities(LoadedStockSharesCount, Securities.StockSharesGroup),
-                    Securities.GetSecurities(LoadedFuturesFortsCount, Securities.FuturesFortsGroup)
-                };
+        //        // Получение список всех типов ценных бумаг.
+        //        Task<List<Security>>[] securities = new Task<List<Security>>[]
+        //        {
+        //            Securities.GetSecurities(LoadedStockBondsCount, Securities.StockBondsGroup),
+        //            Securities.GetSecurities(LoadedStockSharesCount, Securities.StockSharesGroup),
+        //            Securities.GetSecurities(LoadedFuturesFortsCount, Securities.FuturesFortsGroup)
+        //        };
 
-                // Когда все списки ценных бумаг загружены.
-                await Task.Factory.ContinueWhenAll(securities, (Task<List<Security>>[] tasks) =>
-                {
-                    foreach (Task<List<Security>> task in tasks)
-                    {
-                        ShowSecurities(task.Result, task.Result[0].SecurityGroup);
-                    }
-                });
-            }
-            catch
-            {
-                // TODO: Обработать.
-            }
-        }
+        //        // Когда все списки ценных бумаг загружены.
+        //        await Task.Factory.ContinueWhenAll(securities, (Task<List<Security>>[] tasks) =>
+        //        {
+        //            foreach (Task<List<Security>> task in tasks)
+        //            {
+        //                ShowSecurities(task.Result, task.Result[0].SecurityGroup);
+        //            }
+        //        });
+        //    }
+        //    catch
+        //    {
+        //        // TODO: Обработать.
+        //    }
+        //}
 
 
 
@@ -188,48 +199,48 @@ namespace MoexInfoMobile.Pages
         /// </summary>
         /// <param name="securities">Ценные бумаги.</param>
         /// <param name="securityGroup">Тип ценных бумаг.</param>
-        private void ShowSecurities(List<Security> securities, string securityGroup)
-        {
-            StackLayout container;
+        //private void ShowSecurities(List<Security> securities, string securityGroup)
+        //{
+        //    StackLayout container;
 
-            // Получение контейнера для каждого типа ценных бумаг.
-            switch (securityGroup)
-            {
-                // Акции.
-                case Securities.StockBondsGroup:
-                    container = stockBondsContainer;
-                    LoadedStockBondsCount += 50;
-                    break;
-                // Облигации.
-                case Securities.StockSharesGroup:
-                    container = stockSharesContainer;
-                    LoadedStockSharesCount += 50;
-                    break;
-                // Фьючерсы.
-                case Securities.FuturesFortsGroup:
-                    container = futuresFortsContainer;
-                    LoadedFuturesFortsCount += 50;
-                    break;
-                default:
-                    container = null;
-                    break;
-            }
+        //    // Получение контейнера для каждого типа ценных бумаг.
+        //    switch (securityGroup)
+        //    {
+        //        // Акции.
+        //        case Securities.StockBondsGroup:
+        //            container = stockBondsContainer;
+        //            LoadedStockBondsCount += 50;
+        //            break;
+        //        // Облигации.
+        //        case Securities.StockSharesGroup:
+        //            container = stockSharesContainer;
+        //            LoadedStockSharesCount += 50;
+        //            break;
+        //        // Фьючерсы.
+        //        case Securities.FuturesFortsGroup:
+        //            container = futuresFortsContainer;
+        //            LoadedFuturesFortsCount += 50;
+        //            break;
+        //        default:
+        //            container = null;
+        //            break;
+        //    }
 
-            if (container != null)
-            {
-                foreach (Security security in securities)
-                {
-                    var securityView = new SecurityCellView(security);
-                    securityView.Tapped += SecurityView_Tapped;
+        //    if (container != null)
+        //    {
+        //        foreach (Security security in securities)
+        //        {
+        //            var securityView = new SecurityCellView(security);
+        //            securityView.Tapped += SecurityView_Tapped;
 
-                    // Добавление стилей и обработчика события.
-                    securityView.Style = securityCellViewStyle;
+        //            // Добавление стилей и обработчика события.
+        //            securityView.Style = securityCellViewStyle;
                     
 
-                    container.Children.Add(securityView);
-                }
-            }
-        }
+        //            container.Children.Add(securityView);
+        //        }
+        //    }
+        //}
 
 
 
@@ -243,7 +254,6 @@ namespace MoexInfoMobile.Pages
             // Изменение цвета statusBar.
             var moexScarlet = Colors.MoexScarlet;
             App.Os.ChangeStatusBarColor(moexScarlet);
-            
         }
 
 
@@ -254,7 +264,7 @@ namespace MoexInfoMobile.Pages
         /// <param name="sender">Ячейка, вызвавшая событие.</param>
         private async void HeadlineView_Tapped(ICellView sender)
         {
-            var view = sender as InfoCellView;
+            var view = (InfoCellView)sender;
 
             // Переход на страницу новости.
             var headlineInfoPage = new CellInfoPage(view.ItemId, SiteInfoType.HeadlineInfo);
@@ -273,7 +283,7 @@ namespace MoexInfoMobile.Pages
         /// <param name="sender">Ячейка, вызвавшая событие.</param>
         private async void EventView_Tapped(ICellView sender)
         {
-            var view = sender as InfoCellView;
+            var view = (InfoCellView)sender;
 
             // Переход на страницу события.
             var eventInfoPage = new CellInfoPage(view.ItemId, SiteInfoType.EventInfo);
@@ -286,11 +296,11 @@ namespace MoexInfoMobile.Pages
 
 
 
-        private async void SecurityView_Tapped(ICellView sender)
-        {
-            // TODO: Реализовать.
-            throw new NotImplementedException();
-        }
+        //private async void SecurityView_Tapped(ICellView sender)
+        //{
+        //    // TODO: Реализовать.
+        //    throw new NotImplementedException();
+        //}
 
 
 
@@ -309,29 +319,24 @@ namespace MoexInfoMobile.Pages
             }
 
             // Изменение цвета фона и текста нажатой кнопки.
-            Button clickedButton = sender as Button;
+            var clickedButton = (Button)sender;
             clickedButton.BackgroundColor = Colors.WolfGrey;
             clickedButton.TextColor = Colors.ClassicChalk;
 
             // Скрытие всех контейнеров ценных бумаг.
             foreach (StackLayout container in securitiesContainers.Children)
-            {
                 container.IsVisible = false;
-            }
 
             // Отображение необходимого контейнера.
             if (clickedButton.Id == stockBondsToggleButton.Id)
-            {
+                // Отображение акций.
                 stockBondsContainer.IsVisible = true;
-            }
             else if (clickedButton.Id == stockSharesToggleButton.Id)
-            {
+                // Отображение облигаций.
                 stockSharesContainer.IsVisible = true;
-            }
             else if (clickedButton.Id == futuresFortsContainer.Id)
-            {
+                // Отображение фьючерсов.
                 futuresFortsContainer.IsVisible = true;
-            }
         }
     }
 }

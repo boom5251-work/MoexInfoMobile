@@ -4,11 +4,26 @@ using Xamarin.Forms.Xaml;
 namespace MoexInfoMobile.Custom.Html
 {
     /// <summary>
-    /// Контейнер элементов списка.
+    /// Контейнер элементов списка.<br />
+    /// Логика взаимодействия с HtmlListView.xaml
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public abstract partial class HtmlListView : ContentView
     {
+        /// <summary>
+        /// Привязка: стиль текста списка.
+        /// </summary>
+        public static readonly BindableProperty TextStyleProperty =
+            BindableProperty.Create(nameof(TextStyle), typeof(Style), typeof(HtmlListView), null);
+
+        /// <summary>
+        /// Привязка: стиль маркера списка.
+        /// </summary>
+        public static readonly BindableProperty MarkerStyleProperty =
+            BindableProperty.Create(nameof(MarkerStyle), typeof(Style), typeof(HtmlListView), null);
+
+
+
         public HtmlListView()
         {
             InitializeComponent();
@@ -16,29 +31,24 @@ namespace MoexInfoMobile.Custom.Html
 
 
 
-        /// <summary>Стиль текста списка.</summary>
+        /// <summary>
+        /// Стиль текста списка.
+        /// </summary>
         public Style TextStyle
         {
             get { return (Style)GetValue(TextStyleProperty); }
             set { SetValue(TextStyleProperty, value); }
         }
 
-        /// <summary>Привязка: стиль текста списка.</summary>
-        public static readonly BindableProperty TextStyleProperty =
-            BindableProperty.Create(nameof(TextStyle), typeof(Style), typeof(HtmlListView), null);
 
-
-
-        /// <summary>Стиль маркера списка.</summary>
+        /// <summary>
+        /// Стиль маркера списка.
+        /// </summary>
         public Style MarkerStyle
         {
             get { return (Style)GetValue(MarkerStyleProperty); }
             set { SetValue(MarkerStyleProperty, value); }
-        }
-
-        /// <summary>Привязка: стиль маркера списка.</summary>
-        public static readonly BindableProperty MarkerStyleProperty =
-            BindableProperty.Create(nameof(MarkerStyle), typeof(Style), typeof(HtmlListView), null);
+        }        
 
 
 

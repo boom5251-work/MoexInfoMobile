@@ -1,16 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>portable</DebugType>
     <DebugSymbols>true</DebugSymbols>
+    <LangVersion>8</LangVersion>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>8</LangVersion>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Iss\Data\SecurityInfo.cs~RF18beabf6.TMP" />
     <None Remove="Resources\Fonts\Intro-Bold-Alt.otf" />
     <None Remove="Resources\Fonts\Intro-Bold.otf" />
     <None Remove="Resources\Fonts\Intro-Regular-Alt.otf" />
@@ -25,9 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.CommunityToolkit" Version="1.2.0" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.5" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2545" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,8 +52,8 @@
     <Compile Update="Custom\Html\HtmlLinkLabel.xaml.cs">
       <DependentUpon>HtmlLinkLabel.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Pages\InfoPage.xaml.cs">
-      <DependentUpon>InfoPage.xaml</DependentUpon>
+    <Compile Update="Pages\CellInfoPage.xaml.cs">
+      <DependentUpon>CellInfoPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -64,7 +73,7 @@
     <EmbeddedResource Update="Custom\SecurityCellView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Pages\InfoPage.xaml">
+    <EmbeddedResource Update="Pages\CellInfoPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

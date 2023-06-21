@@ -8,15 +8,15 @@ namespace MoexInfoMobile
     public interface OperatingSystem
     {
         /// <summary>
-        /// Отображает тост-уведомление.
+        /// Отображает TOAST-уведомление.
         /// </summary>
         /// <param name="message">Сообщение.</param>
-        /// <param name="isLong">Большая продолжительность.</param>
+        /// <param name="isLong">Является ли сообщение продолжительным.</param>
         void ShowToastNotification(string message, bool isLong = false);
 
 
         /// <summary>
-        /// Изменение цвета верхней панели.
+        /// Изменяет цвета верхней панели.
         /// </summary>
         /// <param name="color">Новый цвет.</param>
         void ChangeStatusBarColor(Color color);

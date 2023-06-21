@@ -7,10 +7,25 @@ using System.Xml;
 
 namespace MoexInfoMobile.Iss.Api
 {
+    /// <summary>
+    /// Работа с API событий биржи.
+    /// </summary>
     public static class Events
     {
         /// <summary>
-        /// Инициализирует получение списка событий.
+        /// Сообщение об ошибке получения списка событий.
+        /// </summary>
+        private static readonly string EventsErrorMessage = "Не удалось получить список событий.";
+
+        /// <summary>
+        /// Сообщение об ошибке получения информации о событии.
+        /// </summary>
+        private static readonly string EventInfoErrorMessage = "Не удалось получить подробности события.";
+
+
+
+        /// <summary>
+        /// Инициирует получение списка событий.
         /// </summary>
         /// <param name="start">Начиная с.</param>
         /// <returns>Задача со списком событий.</returns>
@@ -22,34 +37,33 @@ namespace MoexInfoMobile.Iss.Api
             {
                 try
                 {
-                    string path = $"https://iss.moex.com/iss/events.xml?start={ start }";
+                    string path = $"https://iss.moex.com/iss/events.xml?start={start}";
 
-                    // Путь http-запроса.
+                    // Путь HTTP-запроса.
                     var uri = new Uri(path);
 
-                    // Получение xml-документа.
-                    var document = ReqRes.GetDocumentByUri(uri); 
+                    // Получение XML-документа.
+                    var document = HttpRequestManager.GetDocumentByUri(uri); 
 
                     // Получение элемента rows, который содержит элементы событий (row).
-                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    var rows = (XmlElement?)document?.DocumentElement.FirstChild.LastChild;
 
                     // Перебор всех элементов row. Создание экземпляров событий.
-                    for (int i = 0; i < rows.ChildNodes.Count; i++)
+                    for (int i = 0; i < rows?.ChildNodes.Count; i++)
                     {
-                        XmlNode row = rows.ChildNodes[i];
+                        var row = rows.ChildNodes[i];
 
-                        Event siteEvent = new Event(row);
+                        var siteEvent = new Event(row);
                         events.Add(siteEvent);
                     }
-
                 }
                 catch (UriFormatException)
                 {
-                    App.Os.ShowToastNotification("Не удалось получить список cобытий.");
+                    App.Os.ShowToastNotification(EventsErrorMessage);
                 }
                 catch (InvalidOperationException)
                 {
-                    App.Os.ShowToastNotification("Не удалось получить список событий.");
+                    App.Os.ShowToastNotification(EventsErrorMessage);
                 }
             });
 
@@ -59,38 +73,39 @@ namespace MoexInfoMobile.Iss.Api
 
 
         /// <summary>
-        /// Инициализирует получение информации о событии.
+        /// Инициирует получение информации о событии.
         /// </summary>
         /// <param name="id">Идентификатор события.</param>
         /// <returns>Задача с информацией о событии.</returns>
-        public static async Task<EventInfo> GetEventInfo(ulong id)
+        public static async Task<EventInfo?> GetEventInfo(ulong id)
         {
-            EventInfo eventInfo = null;
+            EventInfo? eventInfo = null;
 
             await Task.Run(() =>
             {
                 try
                 {
-                    string path = $"https://iss.moex.com/iss/events/{ id }.xml";
+                    string path = $"https://iss.moex.com/iss/events/{id}.xml";
 
-                    // Путь http-запроса.
+                    // Путь HTTP-запроса.
                     var uri = new Uri(path);
 
-                    // Получение xml-документа.
-                    var document = ReqRes.GetDocumentByUri(uri); 
+                    // Получение XML-документа.
+                    var document = HttpRequestManager.GetDocumentByUri(uri);
 
                     // Получение элемента rows, который содержит подробности события (row).
-                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                    var rows = (XmlElement?)document?.DocumentElement.FirstChild.LastChild;
 
-                    eventInfo = new EventInfo(rows.FirstChild);
+                    if (rows != null)
+                        eventInfo = new EventInfo(rows.FirstChild);
                 }
                 catch (UriFormatException)
                 {
-                    App.Os.ShowToastNotification("Не удалось получить подробности события.");
+                    App.Os.ShowToastNotification(EventInfoErrorMessage);
                 }
                 catch (InvalidOperationException)
                 {
-                    App.Os.ShowToastNotification("Не удалось получить подробности события.");
+                    App.Os.ShowToastNotification(EventInfoErrorMessage);
                 }
             });
 

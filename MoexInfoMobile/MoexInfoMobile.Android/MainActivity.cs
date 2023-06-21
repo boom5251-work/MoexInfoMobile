@@ -6,7 +6,6 @@ using Android.Widget;
 using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms;
 
-
 namespace MoexInfoMobile.Droid
 {
     [Activity(Label = "iMOEX", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
@@ -31,20 +30,10 @@ namespace MoexInfoMobile.Droid
         }
 
 
-
         public void ShowToastNotification(string message, bool isLong = false)
         {
             // Установка продолжительности уведомления.
-            ToastLength length;
-
-            if (isLong)
-            {
-                length = ToastLength.Long;
-            }
-            else
-            {
-                length = ToastLength.Short;
-            }
+            ToastLength length = isLong ? ToastLength.Long : ToastLength.Short;
 
             // Создание уведомления.
             var notification = Toast.MakeText(ApplicationContext, message, length);
@@ -54,10 +43,7 @@ namespace MoexInfoMobile.Droid
         }
 
 
-
-        public void ChangeStatusBarColor(Color color)
-        {
+        public void ChangeStatusBarColor(Color color) =>
             Window.SetStatusBarColor(color.ToAndroid());
-        }
     }
 }

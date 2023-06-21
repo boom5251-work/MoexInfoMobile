@@ -1,36 +1,41 @@
-﻿using System;
+﻿using MoexInfoMobile.StringPatterns;
+using System;
 using System.Globalization;
 using System.Xml;
 
 namespace MoexInfoMobile.Iss.Data
 {
+    /// <summary>
+    /// Фьючерсный контракт.
+    /// </summary>
     public sealed class FuturesFortInfo : SecurityInfo
     {
         public FuturesFortInfo(XmlNode rows) : base(rows)
         {
-            try
-            {
-                string lastTrade = GetValueWithName(rows, "LASTDATE");
-                string lastDelDte = GetValueWithName(rows, "LASTDELDATE");
-                string format = "yyyy-mm-dd";
+            string lastTrade = GetValueWithName(rows, "LASTDATE");
+            string lastDelDte = GetValueWithName(rows, "LASTDELDATE");
 
-                LastTrade = DateTime.ParseExact(lastTrade, format, CultureInfo.InvariantCulture);
-                LastDelDate = DateTime.ParseExact(lastDelDte, format, CultureInfo.InvariantCulture);
+            LastTrade = DateTime.ParseExact(lastTrade, DateTimePatterns.IssDateFormat, CultureInfo.InvariantCulture);
+            LastDelDate = DateTime.ParseExact(lastDelDte, DateTimePatterns.IssDateFormat, CultureInfo.InvariantCulture);
 
-                AssetCode = GetValueWithName(rows, "ASSETCODE");
-            }
-            catch { }
+            AssetCode = GetValueWithName(rows, "ASSETCODE");
         }
 
 
 
-        /// <summary>Последний торговый день.</summary>
+        /// <summary>
+        /// Последний торговый день.
+        /// </summary>
         public DateTime LastTrade { get; }
 
-        /// <summary>День исполнения.</summary>
+        /// <summary>
+        /// День исполнения.
+        /// </summary>
         public DateTime LastDelDate { get; }
 
-        /// <summary>Код базового актива.</summary>
-        public string AssetCode { get; } = string.Empty;
+        /// <summary>
+        /// Код базового актива.
+        /// </summary>
+        public string AssetCode { get; }
     }
 }

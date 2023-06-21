@@ -1,7 +1,7 @@
-﻿using MoexInfoMobile.Custom;
-using MoexInfoMobile.Custom.Html;
+﻿using MoexInfoMobile.Custom.Html;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -10,7 +10,7 @@ using Xamarin.Forms;
 namespace MoexInfoMobile.HtmlFormat
 {
     /// <summary>
-    /// Дешифратор html-разметки.
+    /// Дешифратор HTML-разметки.
     /// </summary>
     public sealed class HtmlDecoder
     {
@@ -22,39 +22,44 @@ namespace MoexInfoMobile.HtmlFormat
 
 
 
-        /// <summary>Документ html.</summary>
-        private XmlDocument HtmlDocument { get; set; }
+        /// <summary>
+        /// Документ HTML.
+        /// </summary>
+        public XmlDocument HtmlDocument { get; }
 
-        /// <summary>Стили элементов интерфейса.</summary>
-        private ResourceDictionary HtmlStyles { get; set; }
+        /// <summary>
+        /// Стили элементов интерфейса.
+        /// </summary>
+        public ResourceDictionary HtmlStyles { get; }
 
 
 
         /// <summary>
-        /// Создает элементы интерфейса на основе кода html.
+        /// Создает элементы интерфейса на основе кода HTML.
         /// </summary>
-        /// <param name="html">Строка html.</param>
+        /// <param name="html">Строка HTML.</param>
         /// <returns>Список элементов управления.</returns>
         public List<View> DecodeHtml(string html)
         {
             html = ToNormalFormat(html);
 
-            // Дополнение строки html контейнером.
-            if (!html.Contains("<html>"))
-            {
+            // Дополнение строки HTML контейнером.
+            if (!Regex.IsMatch(html, @"<html>.<html>"))
                 html = $"<html>{html}</html>";
-            }
 
-            // Инициализация документа html.
+
+            // Инициализация документа HTML.
             HtmlDocument.LoadXml(html);
 
             // Извлечение элементов интерфейса.
-            List<View> views = new List<View>();
+            var views = new List<View>();
 
             foreach (XmlNode node in HtmlDocument.DocumentElement)
             {
-                var view = DecodeElement(node as XmlElement);
-                views.Add(view);
+                var view = DecodeElement((XmlElement)node);
+
+                if (view != null)
+                    views.Add(view);
             }
 
             return views;
@@ -63,74 +68,55 @@ namespace MoexInfoMobile.HtmlFormat
 
 
         /// <summary>
-        /// Декодоирует теги.
+        /// Декодирует теги.
         /// </summary>
         /// <param name="element">Элемент html.</param>
         /// <returns>Представление, созданное на основе тегов.</returns>
-        private View DecodeElement(XmlElement element)
+        private View? DecodeElement(XmlElement element)
         {
-            View view;
-
-            switch (element.Name.ToLower())
+            return element.Name.ToLower() switch
             {
                 // Текстовый блок (параграф).
-                case "p":
-                    view = CreateTextElement(element);
-                    break;
+                "p" => CreateTextElement(element),
                 // Ссылка.
-                case "a":
-                    view = CreateLinkLabel(element);
-                    break;
+                "a" => CreateLinkLabel(element),
                 // Таблица.
-                case "table":
-                    view = CreateTable(element);
-                    break;
+                "table" => CreateTable(element),
                 // Заголовок таблицы.
-                case "th":
-                    view = CreateTableHeadline(element.InnerText);
-                    break;
+                "th" => CreateTableHeadline(element.InnerText),
                 // Обычный текст таблицы.
-                case "td":
-                    view = CreateLabel(element.InnerText);
-                    break;
+                "td" => CreateLabel(element.InnerText),
                 // Неупорядоченный список.
-                case "ul":
-                    view = CreateUnorderedList(element);
-                    break;
+                "ul" => CreateUnorderedList(element),
                 // Нумерованный список.
-                case "ol":
-                    view = CreateNumberedList(element);
-                    break;
+                "ol" => CreateNumberedList(element),
                 // Ничего из этого.
-                default:
-                    view = null;
-                    break;
-            }
-
-            return view;
+                _ => null,
+            };
         }
 
 
 
         /// <summary>
-        /// Проверяет, является ли строка html-разметкой.
+        /// Проверяет, является ли строка HTML-разметкой.
         /// </summary>
         /// <param name="text">Проверяема строка.</param>
-        /// <returns>True, если строка является html-разметкой.</returns>
-        public static bool IsHtmlText(string text) => Regex.IsMatch(text, "<.+?>");
+        /// <returns>True, если строка является HTML-разметкой.</returns>
+        public static bool IsHtmlText(string text) =>
+            Regex.IsMatch(text, "<.+?>");
 
 
 
         /// <summary>
         /// Преобразует строку к требуемому формату.
         /// </summary>
-        /// <param name="html">Форматирует html-строку.</param>
+        /// <param name="html">Форматирует HTML-строку.</param>
         /// <returns></returns>
         public string ToNormalFormat(string html)
         {
             var encodedSymbols = new Regex("&[a-z]+;", RegexOptions.IgnoreCase);
 
-            foreach (Match match in encodedSymbols.Matches(html))
+            foreach (Match match in encodedSymbols.Matches(html).Cast<Match>())
             {
                 string value = match.Value;
 
@@ -159,13 +145,9 @@ namespace MoexInfoMobile.HtmlFormat
             View result;
 
             if (element.InnerXml.ToLower().Contains("</a>"))
-            {
                 result = CreateFormattedText(element);
-            }
             else
-            {
                 result = CreateLabel(element.InnerText);
-            }
 
             return result;
         }
@@ -190,7 +172,7 @@ namespace MoexInfoMobile.HtmlFormat
                 }
                 else if (node.Name.ToLower() == "a")
                 {
-                    var linkLabel = CreateLinkLabel(node as XmlElement);
+                    var linkLabel = CreateLinkLabel((XmlElement)node);
                     layout.Children.Add(linkLabel);
                 }
             }
@@ -211,8 +193,8 @@ namespace MoexInfoMobile.HtmlFormat
             text = text.Replace("&amp;", "&")
                 .Replace("&quot;", "\"");
 
-            // Удаление ненунжных тегов.
-            foreach (Match match in Regex.Matches(text, "<.+?>"))
+            // Удаление ненужных тегов.
+            foreach (Match match in Regex.Matches(text, "<.+?>").Cast<Match>())
             {
                 text = text.Replace(match.Value, string.Empty);
             }
@@ -234,7 +216,7 @@ namespace MoexInfoMobile.HtmlFormat
         /// </summary>
         /// <param name="element">Элемент html.</param>
         /// <returns></returns>
-        private HtmlLinkLabel CreateLinkLabel(XmlElement element)
+        private HtmlLinkLabel? CreateLinkLabel(XmlElement element)
         {
             try
             {
@@ -266,17 +248,17 @@ namespace MoexInfoMobile.HtmlFormat
         /// </summary>
         /// <param name="tableElement">Элемент html (таблица).</param>
         /// <returns>Таблица.</returns>
-        private View CreateTable(XmlElement tableElement)
+        private View? CreateTable(XmlElement tableElement)
         {
             try
             {
                 // Первый элемент <thead> или <tbody>.
-                var firstTElement = tableElement.ChildNodes[0] as XmlElement;
+                var firstTElement = (XmlElement)tableElement.ChildNodes[0];
 
                 // Количество полей и атрибутов таблицы.
                 int rowsCount = firstTElement.ChildNodes.Count;
                 int columnsCount = firstTElement.ChildNodes[0].ChildNodes.Count;
-
+                
                 // Массив содержимого ячеек таблицы.
                 View[,] cellsContent = new View[rowsCount, columnsCount];
 
@@ -285,32 +267,33 @@ namespace MoexInfoMobile.HtmlFormat
                     // Перебор полей таблицы.
                     for (int i = 0; i < rowsCount; i++)
                     {
-                        // Перебор ячеек таблицы в стрке.
+                        // Перебор ячеек таблицы в строке.
                         int j = 0;
                         foreach (XmlNode cellNode in tNode.ChildNodes[i])
                         {
-                            var cellContent = DecodeElement(cellNode as XmlElement);
-                            cellsContent[i, j] = cellContent;
+                            var cellContent = DecodeElement((XmlElement)cellNode);
+
+                            if (cellContent != null)
+                                cellsContent[i, j] = cellContent;
+
                             j++;
                         }
                     }
                 }
 
                 // Создание и инициализация таблицы.
-                var table = new HtmlTableView
+                var table = new HtmlTableView(cellsContent)
                 {
                     Style = (Style)HtmlStyles["Table"]
                 };
 
-                table.InitializeTable(cellsContent);
                 return table;
             }
             catch
             {
                 // TODO: Добавить обработку исключений.
+                return null;
             }
-
-            return null;
         }
 
 
@@ -334,7 +317,7 @@ namespace MoexInfoMobile.HtmlFormat
         /// </summary>
         /// <param name="ulElement">Элемент html (неупорядоченный список).</param>
         /// <returns>Неупорядоченный список.</returns>
-        private View CreateUnorderedList(XmlElement ulElement)
+        private View? CreateUnorderedList(XmlElement ulElement)
         {
             try
             {
@@ -360,7 +343,7 @@ namespace MoexInfoMobile.HtmlFormat
         /// </summary>
         /// <param name="olElement">Элемент html (нумерованный список).</param>
         /// <returns></returns>
-        private View CreateNumberedList(XmlElement olElement)
+        private View? CreateNumberedList(XmlElement olElement)
         {
             try
             {
@@ -384,18 +367,16 @@ namespace MoexInfoMobile.HtmlFormat
 
 
         /// <summary>
-        /// Извелкает значения элементов списка.
+        /// Извлекает значения элементов списка.
         /// </summary>
         /// <param name="element">Элемент html.</param>
         /// <returns>Строки списка.</returns>
         private string[] GetLiValues(XmlNode element)
         {
-            List<string> values = new List<string>();
+            var values = new List<string>();
 
             foreach (XmlNode liNode in element)
-            {
                 values.Add(liNode.InnerText);
-            }
 
             return values.ToArray();
         }

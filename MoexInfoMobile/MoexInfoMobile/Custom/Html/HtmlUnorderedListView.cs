@@ -11,7 +11,7 @@ namespace MoexInfoMobile.Custom.Html
         {
             foreach (string text in values)
             {
-                Frame marker = CreateMarker() as Frame;
+                Frame marker = (Frame)CreateMarker();
                 AddRow(marker, text);
             }
         }

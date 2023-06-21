@@ -7,10 +7,13 @@ using System.Xml;
 
 namespace MoexInfoMobile.Iss.Api
 {
+    /// <summary>
+    /// Работа с API новостей биржи.
+    /// </summary>
     public static class SiteNews
     {
         /// <summary>
-        /// Инициализирует получение списка новостных заголовков.
+        /// Инициирует получение списка новостных заголовков.
         /// </summary>
         /// <param name="start">Начиная с.</param>
         /// <returns>Задача со списком новостных заголовков.</returns>
@@ -20,77 +23,55 @@ namespace MoexInfoMobile.Iss.Api
 
             await Task.Run(() =>
             {
-                try
+                string path = $"https://iss.moex.com/iss/sitenews.xml?start={start}";
+
+                // Путь HTTP-запроса.
+                var uri = new Uri(path);
+
+                // Получение XML-документа.
+                var document = HttpRequestManager.GetDocumentByUri(uri);
+
+                // Получение элемента rows, который содержит элементы новостных заголовков (row).
+                var rows = (XmlElement?)document?.DocumentElement.FirstChild.LastChild;
+
+                // Перебор всех элементов row. Создание экземпляров новостных заголовков.
+                for (int i = 0; i < rows?.ChildNodes.Count; i++)
                 {
-                    string path = $"https://iss.moex.com/iss/sitenews.xml?start={ start }";
+                    var row = rows.ChildNodes[i];
 
-                    // Путь http-запроса.
-                    var uri = new Uri(path);
-
-                    // Получение xml-документа.
-                    var document = ReqRes.GetDocumentByUri(uri);
-
-                    // Получение элемента rows, который содержит элементы новостных заголовков (row).
-                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
-
-                    // Перебор всех элементов row. Создание экземпляров новостных заголовков.
-                    for (int i = 0; i < rows.ChildNodes.Count; i++)
-                    {
-                        var row = rows.ChildNodes[i];
-
-                        var headline = new Headline(row);
+                    if (Headline.CanCreateInstance(row, out Headline? headline) && headline != null)
                         headlines.Add(headline);
-                    }
-                }
-                catch (UriFormatException)
-                {
-                    App.Os.ShowToastNotification("Не удалось получить список новостей.");
-                }
-                catch (InvalidOperationException)
-                {
-                    App.Os.ShowToastNotification("Не удалось получить список новостей.");
                 }
             });
 
             return headlines;
         }
 
-
         
         /// <summary>
-        /// Инициализирует получение иноформацию о новости.
+        /// Инициирует получение информацию о новости.
         /// </summary>
         /// <param name="id">Идентификатор новости.</param>
         /// <returns>Задача с информацией о новости.</returns>
-        public static async Task<HeadlineInfo> GetNewsInfo(ulong id)
+        public static async Task<HeadlineInfo?> GetHeadlineInfo(ulong id)
         {
-            HeadlineInfo newsInfo = null;
+            HeadlineInfo? newsInfo = null;
 
             await Task.Run(() =>
             {
-                try
-                {
-                    string path = $"https://iss.moex.com/iss/sitenews/{ id }.xml";
+                string path = $"https://iss.moex.com/iss/sitenews/{id}.xml";
 
-                    // Путь http-запроса.
-                    var uri = new Uri(path);
+                // Путь HTTP-запроса.
+                var uri = new Uri(path);
 
-                    // Получение xml-документа.
-                    var document = ReqRes.GetDocumentByUri(uri);
+                // Получение XML-документа.
+                var document = HttpRequestManager.GetDocumentByUri(uri);
 
-                    // Получение элемента rows, который содержит элемент-новость (row).
-                    var rows = document.DocumentElement.FirstChild.LastChild as XmlElement;
+                // Получение элемента rows, который содержит элемент-новость (row).
+                var rows = (XmlElement?)document?.DocumentElement.FirstChild.LastChild;
 
-                    newsInfo = new HeadlineInfo(rows.FirstChild);
-                }
-                catch (UriFormatException)
-                {
-                    App.Os.ShowToastNotification("Не удалось загрузить новость.");
-                }
-                catch (InvalidOperationException)
-                {
-                    App.Os.ShowToastNotification("Не удалось загрузать новость.");
-                }
+                if (rows != null)
+                    HeadlineInfo.CanCreateInstance(rows.FirstChild, out newsInfo);
             });
 
             return newsInfo;

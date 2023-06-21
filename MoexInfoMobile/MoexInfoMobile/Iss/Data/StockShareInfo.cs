@@ -4,54 +4,73 @@ using System.Xml;
 
 namespace MoexInfoMobile.Iss.Data
 {
+    /// <summary>
+    /// Облигация.
+    /// </summary>
     public sealed class StockShareInfo : SecurityInfo
     {
         public StockShareInfo(XmlNode rows) : base(rows)
         {
-            try
-            {
-                Isin = GetValueWithName(rows, "ISIN");
+            Isin = GetValueWithName(rows, "ISIN");
 
-                string issueSize = GetValueWithName(rows, "ISSUESIZE");
-                IssueSize = ulong.Parse(issueSize);
+            string issueSize = GetValueWithName(rows, "ISSUESIZE");
+            IssueSize = ulong.Parse(issueSize);
 
-                InitializeDates(rows);
-                InitializeCost(rows);
-                InitializeCoupon(rows);
-            }
-            catch { }
+            InitializeDates(rows);
+            InitializeCost(rows);
+            InitializeCoupon(rows);
         }
 
 
 
-        /// <summary>Исин-код.</summary>
+        /// <summary>
+        /// Исин-код.
+        /// </summary>
         public string Isin { get; }
 
-        /// <summary>Объем выпуска.</summary>
+        /// <summary>
+        /// Объем выпуска.
+        /// </summary>
         public ulong IssueSize { get; }
 
-        /// <summary>Дата выпуска.</summary>
+        /// <summary>
+        /// Дата выпуска.
+        /// </summary>
         public DateTime IssueDate { get; private set; }
 
-        /// <summary>Дата погашения.</summary>
+        /// <summary>
+        /// Дата погашения.
+        /// </summary>
         public DateTime MatDate { get; private set; }
 
-        /// <summary>Дата выплаты купона.</summary>
+        /// <summary>
+        /// Дата выплаты купона.
+        /// </summary>
         public DateTime CouponDate { get; private set; }
 
-        /// <summary>Первоначальная номинальная стоимость.</summary>
+        /// <summary>
+        /// Первоначальная номинальная стоимость.
+        /// </summary>
         public uint InitialFaceValue { get; private set; }
 
-        /// <summary>Номиниальная стоимость.</summary>
+        /// <summary>
+        /// Номинальная стоимость.
+        /// </summary>
         public uint FaceValue { get; private set; }
 
-        /// <summary>Дней до погашения.</summary>
-        public uint DayStoreDemition { get; private set; }
+        /// <summary>
+        /// Дней до погашения.
+        /// </summary>
+        public uint DayStoredEmption { get; private set; }
 
-        /// <summary>Переодичность выплаты купона в год.</summary>
+        /// <summary>
+        /// Периодичность выплаты купона в год.
+        /// </summary>
         public ushort CouponFrequency { get; private set; }
 
-        /// <summary>Ставка купона.</summary>
+        /// <summary>
+        /// Ставка купона.
+        /// </summary>
         public double CouponPercent { get; private set; }
 
 
@@ -83,7 +102,7 @@ namespace MoexInfoMobile.Iss.Data
         {
             InitialFaceValue = uint.Parse(GetValueWithName(rows, "INITIALFACEVALUE"));
             FaceValue = uint.Parse(GetValueWithName(rows, "FACEVALUE"));
-            DayStoreDemition = uint.Parse(GetValueWithName(rows, "DAYSTOREDEMITION"));
+            DayStoredEmption = uint.Parse(GetValueWithName(rows, "DAYSTOREDEMPTION"));
         }
 
 

@@ -6,12 +6,19 @@ using Xamarin.Forms.Platform.Android.AppCompat;
 
 namespace MoexInfoMobile.Droid.Renderer
 {
+    /// <summary>
+    /// Рендерер фрейма фона.
+    /// </summary>
     public class BackgroundFrameRenderer : FrameRenderer
     {
         public BackgroundFrameRenderer(Context context) : base(context) { }
 
 
-        // Переопределение метода, обрабатывающаего событие "элемент изменен".
+
+        /// <summary>
+        /// Переопределение метода, обрабатывающего событие "элемент изменен".
+        /// </summary>
+        /// <param name="e">Аргументы.</param>
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Frame> e)
         {
             base.OnElementChanged(e);
@@ -19,7 +26,11 @@ namespace MoexInfoMobile.Droid.Renderer
         }
 
 
-        // Переопределение метода, обрабатывающего событие "свойства элемента изменено".
+        /// <summary>
+        /// Переопределение метода, обрабатывающего событие "свойства элемента изменено".
+        /// </summary>
+        /// <param name="sender">Объект, вызвавший событие.</param>
+        /// <param name="e">Аргументы.</param>
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
@@ -27,7 +38,9 @@ namespace MoexInfoMobile.Droid.Renderer
         }
 
 
-        // Установка ресурса-листа слоев отрисовки.
+        /// <summary>
+        /// Установка ресурса-листа слоев отрисовки.
+        /// </summary>
         private void SetBackgroundResource()
         {
             if (Element is BackgroundFrame)

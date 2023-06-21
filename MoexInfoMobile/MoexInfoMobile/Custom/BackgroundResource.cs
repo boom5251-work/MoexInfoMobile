@@ -5,10 +5,14 @@
     /// </summary>
     public enum BackgroundResource
     {
-        /// <summary>Белый пользовательский фрейм.</summary>
+        /// <summary>
+        /// Белый пользовательский фрейм.
+        /// </summary>
         BackgroundFrameClassicChalk,
 
-        /// <summary>Ячейка таблицы.</summary>
-        TableBackroundFrame
+        /// <summary>
+        /// Ячейка таблицы.
+        /// </summary>
+        TableBackgroundFrame
     }
 }

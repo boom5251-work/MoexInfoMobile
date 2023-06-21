@@ -4,7 +4,8 @@ using Xamarin.Forms.Xaml;
 namespace MoexInfoMobile.Custom.Html
 {
     /// <summary>
-    /// Элемент управления, представляющий ячейку таблицы.
+    /// Элемент управления, представляющий ячейку таблицы.<br />
+    /// Логика взаимодействия с HtmlTableCell.xaml
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HtmlTableCell : Frame
@@ -18,9 +19,7 @@ namespace MoexInfoMobile.Custom.Html
         public HtmlTableCell(params View[] views) : base()
         {
             foreach (View view in views)
-            {
                 AddView(view);
-            }
         }
 
 
@@ -28,19 +27,15 @@ namespace MoexInfoMobile.Custom.Html
         /// <summary>
         /// Свойство указывающее на то, есть ли дочерние элементы в ячейке.
         /// </summary>
-        public bool HasChildren
-        {
-            get => _cell.Children.Count > 0;
-        }
+        public bool HasChildren => _cell.Children.Count > 0;
+
 
 
         /// <summary>
-        /// Добавление элемента интерфейса в ячейку.
+        /// Добавляет элемент интерфейса в ячейку.
         /// </summary>
         /// <param name="view">Содержимое ячейки.</param>
-        public void AddView(View view)
-        {
+        public void AddView(View view) =>
             _cell.Children.Add(view);
-        }
     }
 }

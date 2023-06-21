@@ -7,7 +7,9 @@ namespace MoexInfoMobile.Custom.Html
     /// </summary>
     public sealed class HtmlNumberedListView : HtmlListView
     {
-        /// <summary>Символ, стоящий после номера элемента.</summary>
+        /// <summary>
+        /// Символ, стоящий после номера элемента.
+        /// </summary>
         public char MarkerCharacter { get; set; }
 
 
@@ -16,19 +18,21 @@ namespace MoexInfoMobile.Custom.Html
         {
             for (int i = 0; i < values.Length; i++)
             {
-                var marker = CreateMarker() as Label;
-                marker.Text = $"{i}{MarkerCharacter}";
+                var marker = (Label)CreateMarker();
+                marker.Text = $"{i + 1}{MarkerCharacter}";
 
                 AddRow(marker, values[i]);
             }
         }
 
-
         
         protected override View CreateMarker()
         {
-            Label marker = CreateMarker() as Label;
-            marker.BindingContext = this;
+            Label marker = new Label
+            {
+                BindingContext = this
+            };
+
             marker.SetBinding(StyleProperty, nameof(MarkerStyle));
             return marker;
         }

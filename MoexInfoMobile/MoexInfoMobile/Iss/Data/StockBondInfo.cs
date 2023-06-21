@@ -4,39 +4,46 @@ using System.Xml;
 
 namespace MoexInfoMobile.Iss.Data
 {
+    /// <summary>
+    /// Данные облигации.
+    /// </summary>
     public sealed class StockBondInfo : SecurityInfo
     {
         public StockBondInfo(XmlNode rows) : base(rows)
         {
-            try
-            {
-                Isin = GetValueWithName(rows, "ISIN");
+            Isin = GetValueWithName(rows, "ISIN");
 
-                string issueSize = GetValueWithName(rows, "ISSUESIZE");
-                IssueSize = ulong.Parse(issueSize);
+            string issueSize = GetValueWithName(rows, "ISSUESIZE");
+            IssueSize = ulong.Parse(issueSize);
 
-                string issueDate = GetValueWithName(rows, "ISSUEDATE");
-                IssueDate = DateTime.ParseExact(issueDate, "yyyy-mm-dd", CultureInfo.InvariantCulture);
+            string issueDate = GetValueWithName(rows, "ISSUEDATE");
+            IssueDate = DateTime.ParseExact(issueDate, "yyyy-mm-dd", CultureInfo.InvariantCulture);
 
-                // Ресурс с тинькофф-инвестиций (160x160).
-                string path = $"http://invest-brands.cdn-tinkoff.ru/{ Isin }x160.png";
-                BrandLogoUri = new Uri(path);
-            }
-            catch { }
+            // Ресурс с тинькофф-инвестиций (160x160).
+            string path = $"http://invest-brands.cdn-tinkoff.ru/{Isin}x160.png";
+            BrandLogoUri = new Uri(path);
         }
 
 
 
-        /// <summary>Исин-код.</summary>
+        /// <summary>
+        /// Исин-код.
+        /// </summary>
         public string Isin { get; }
 
-        /// <summary>Объем выпуска.</summary>
+        /// <summary>
+        /// Объем выпуска.
+        /// </summary>
         public ulong IssueSize { get; }
 
-        /// <summary>Дата выпуска.</summary>
+        /// <summary>
+        /// Дата выпуска.
+        /// </summary>
         public DateTime IssueDate { get; }
 
-        /// <summary>Путь к интернет-ресурсу с логотипом.</summary>
+        /// <summary>
+        /// Путь к интернет-ресурсу с логотипом.
+        /// </summary>
         public Uri BrandLogoUri { get; }
     }
 }

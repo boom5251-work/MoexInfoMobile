@@ -7,14 +7,21 @@ namespace MoexInfoMobile.Custom
     /// </summary>
     public class BackgroundFrame : Frame
     {
-        /// <summary>Слои фона элемента.</summary>
-        public BackgroundResource BackgroundResource
-        {
-            get { return (BackgroundResource)GetValue(BackgroundResourceProperty); }
-            set { SetValue(BackgroundResourceProperty, value); }
-        }
-
+        /// <summary>
+        /// Привязка: слои фона элемента.
+        /// </summary>
         public static readonly BindableProperty BackgroundResourceProperty =
             BindableProperty.Create(nameof(BackgroundResource), typeof(BackgroundResource), typeof(BackgroundFrame), default(BackgroundResource));
+
+
+
+        /// <summary>
+        /// Слои фона элемента.
+        /// </summary>
+        public BackgroundResource BackgroundResource
+        {
+            get => (BackgroundResource)GetValue(BackgroundResourceProperty);
+            set => SetValue(BackgroundResourceProperty, value);
+        }
     }
 }

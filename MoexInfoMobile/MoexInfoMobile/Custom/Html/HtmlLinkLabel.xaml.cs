@@ -6,7 +6,8 @@ using Xamarin.Forms.Xaml;
 namespace MoexInfoMobile.Custom.Html
 {
     /// <summary>
-    /// Элемент управления, представляющий текст-ссылку.
+    /// Элемент управления, представляющий текст-ссылку.<br />
+    /// Логика взаимодействия с HtmlLinkLabel.xaml
     /// </summary>
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HtmlLinkLabel : Label
@@ -19,8 +20,11 @@ namespace MoexInfoMobile.Custom.Html
 
 
 
-        /// <summary>Путь.</summary>
-        public Uri Uri { get; set; }
+        /// <summary>
+        /// URI ссылки.
+        /// </summary>
+        public Uri? Uri { get; set; }
+
 
 
         /// <summary>

@@ -1,9 +1,13 @@
-﻿using System;
+﻿using MoexInfoMobile.StringPatterns;
+using System;
 using System.Globalization;
 using System.Xml;
 
 namespace MoexInfoMobile.Iss.Data
 {
+    /// <summary>
+    /// Событие биржи.
+    /// </summary>
     public class Event
     {
         public Event(XmlNode row)
@@ -13,26 +17,33 @@ namespace MoexInfoMobile.Iss.Data
 
             Title = row.Attributes["title"].Value;
 
-            string format = "yyyy-MM-dd HH:mm:ss";
             string from = row.Attributes["from"].Value;
-            string modifiedAt = row.Attributes["modified_at"].Value;
+            //string modifiedAt = row.Attributes["modified_at"].Value;
 
-            From = DateTime.ParseExact(from, format, CultureInfo.InvariantCulture);
-            ModifiedAt = DateTime.ParseExact(modifiedAt, format, CultureInfo.InvariantCulture);
+            From = DateTime.ParseExact(from, DateTimePatterns.IssDateTimeFormat, CultureInfo.InvariantCulture);
+            //ModifiedAt = DateTime.ParseExact(modifiedAt, DateTimePatterns.IssDateTimeFormat, CultureInfo.InvariantCulture);
         }
 
 
 
-        /// <summary>Идентификатор события.</summary>
-        public ulong Id { get; private set; }
+        /// <summary>
+        /// Идентификатор события.
+        /// </summary>
+        public ulong Id { get; }
 
-        /// <summary>Заголовок.</summary>
-        public string Title { get; private set; } = string.Empty;
+        /// <summary>
+        /// Заголовок.
+        /// </summary>
+        public string Title { get; }
 
-        /// <summary>Дата и время начала события.</summary>
-        public DateTime From { get; private set; }
+        /// <summary>
+        /// Дата и время начала события.
+        /// </summary>
+        public DateTime From { get; }
 
-        /// <summary>Дата изменения.</summary>
-        public DateTime ModifiedAt { get; private set; }
+        /// <summary>
+        /// Дата изменения.
+        /// </summary>
+        public DateTime ModifiedAt { get; }
     }
 }
